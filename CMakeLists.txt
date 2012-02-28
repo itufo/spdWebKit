@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(WebKit)
-SET(CMAKE_VERBOSE_MAKEFILE On)
+SET(CMAKE_VERBOSE_MAKEFILE OFF)
 # Set a default build type if and only if user did not define one as command
 # line options and he did not give custom CFLAGS or CXXFLAGS. Otherwise, flags
 # from default build type would overwrite user-defined ones.
