@@ -737,6 +737,14 @@ sub builtDylibPathForName
     if (isEfl()) {
         return "$configurationProductDir/Source/WebKit/libewebkit.so";
     }
+
+    #{spd add
+    if (isSpd()) {
+        $libraryName = "spdWebKit";
+        return "$configurationProductDir/lib/lib$libraryName.so";
+    }
+    #spd add}
+
     if (isWinCE()) {
         return "$configurationProductDir/$libraryName";
     }
