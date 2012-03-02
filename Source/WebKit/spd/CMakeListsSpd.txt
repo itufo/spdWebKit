@@ -65,7 +65,7 @@ IF (ENABLE_NOTIFICATIONS)
 ENDIF ()
 
 LIST(APPEND WebKit_SOURCES
-    spd/WebCoreSupport/test.cpp
+#    spd/WebCoreSupport/test.cpp
 #    efl/WebCoreSupport/AssertMatchingEnums.cpp
     spd/WebCoreSupport/ChromeClientSpd.cpp
 #    efl/WebCoreSupport/DeviceOrientationClientEfl.cpp
