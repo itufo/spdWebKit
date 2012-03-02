@@ -58,6 +58,7 @@ typedef wxBrush* PlatformPatternPtr;
 #elif OS(WINCE)
 typedef void* PlatformPatternPtr;
 //{spd add
+#elif PLATFORM(SPD)
 typedef void* PlatformPatternPtr;
 //spd add}
 #endif
