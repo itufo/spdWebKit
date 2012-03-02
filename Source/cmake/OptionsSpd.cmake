@@ -17,8 +17,8 @@ SET(WTF_PLATFORM_SPD 1)
 # -----------------------------------------------------------------------------
 # Determine which font backend will be used
 # -----------------------------------------------------------------------------
-#SET(ALL_FONT_BACKENDS freetype pango)
-#SET(FONT_BACKEND "freetype" CACHE STRING "choose which network backend to use (one of ${ALL_FONT_BACKENDS})")
+SET(ALL_FONT_BACKENDS freetype pango)
+SET(FONT_BACKEND "freetype" CACHE STRING "choose which network backend to use (one of ${ALL_FONT_BACKENDS})")
 
 #FIND_PACKAGE(Cairo 1.10 REQUIRED)
 #FIND_PACKAGE(EFL REQUIRED)
@@ -105,7 +105,7 @@ WEBKIT_FEATURE(ENABLE_WEBGL "Enable WebGL" DEFAULT OFF)
 WEBKIT_FEATURE(ENABLE_WORKERS "Enable workers" DEFAULT ON)
 WEBKIT_FEATURE(ENABLE_XSLT "Enable XSLT" DEFAULT ON)
 
-OPTION(ENABLE_ECORE_X "Enable Ecore_X specific usage (cursor, bell)" ON)
+OPTION(ENABLE_ECORE_X "Enable Ecore_X specific usage (cursor, bell)" Off)
 IF (ENABLE_ECORE_X)
     IF (ECORE_X_FOUND)
         MESSAGE(STATUS "Using Ecore-X to provide extended support.")

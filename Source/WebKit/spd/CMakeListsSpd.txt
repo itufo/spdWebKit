@@ -216,12 +216,12 @@ ELSE ()
     SET(LIBS_PRIVATE "")
 ENDIF ()
 
-CONFIGURE_FILE(
-    spd/ewebkit.pc.in
-    ${CMAKE_BINARY_DIR}/WebKit/spd/ewebkit.pc
-    @ONLY)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/WebKit/spd/ewebkit.pc
-    DESTINATION lib/pkgconfig)
+#CONFIGURE_FILE(
+#    spd/ewebkit.pc.in
+#    ${CMAKE_BINARY_DIR}/WebKit/spd/ewebkit.pc
+#    @ONLY)
+#INSTALL(FILES ${CMAKE_BINARY_DIR}/WebKit/spd/ewebkit.pc
+#    DESTINATION lib/pkgconfig)
 
 UNSET(LIBS_PRIVATE)
 
