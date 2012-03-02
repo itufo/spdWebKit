@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(WebKit)
-SET(CMAKE_VERBOSE_MAKEFILE OFF)
+
 # Set a default build type if and only if user did not define one as command
 # line options and he did not give custom CFLAGS or CXXFLAGS. Otherwise, flags
 # from default build type would overwrite user-defined ones.
@@ -53,7 +53,7 @@ INCLUDE(WebKitFeatures)
 # -----------------------------------------------------------------------------
 # Determine which port will be built
 # -----------------------------------------------------------------------------
-SET(ALL_PORTS Efl Spd WinCE BlackBerry)
+SET(ALL_PORTS Efl WinCE BlackBerry Spd)
 SET(PORT "NOPORT" CACHE STRING "choose which WebKit port to build (one of ${ALL_PORTS})")
 
 LIST(FIND ALL_PORTS ${PORT} RET)
