@@ -90,7 +90,11 @@ my $isWinCE;
 my $isWinCairo;
 my $isWx;
 my $isEfl;
+
+#{spd add
 my $isSpd;
+#spd add}
+
 my @wxArgs;
 my $isBlackBerry;
 my $isChromium;
@@ -731,11 +735,7 @@ sub builtDylibPathForName
         return "NotFound";
     }
     if (isEfl()) {
-        return "$configurationProductDir/lib/libspdwebkit.so";
-    }
-    if (isSpd()) {
-        printf("configurationProductDir is (%s)\n",$configurationProductDir);
-        return "$configurationProductDir/Source/WebKit/libspdwebkit.so";
+        return "$configurationProductDir/Source/WebKit/libewebkit.so";
     }
     if (isWinCE()) {
         return "$configurationProductDir/$libraryName";
@@ -780,15 +780,8 @@ sub determineIsInspectorFrontend()
 
 sub isQt()
 {
-    return 0;
     determineIsQt();
     return $isQt;
-}
-
-sub isSpd()
-{
-    determineIsSpd();
-    return $isSpd;
 }
 
 sub getQtVersion()
@@ -884,7 +877,6 @@ sub isWK2()
 sub determineIsQt()
 {
     return if defined($isQt);
-
     # Allow override in case QTDIR is not set.
     if (checkForArgumentAndRemoveFromARGV("--qt")) {
         $isQt = 1;
@@ -896,17 +888,15 @@ sub determineIsQt()
         $isQt = 0;
         return;
     }
-
-    $isQt = defined($ENV{'QTDIR'});
-}
-
-sub determineIsSpd()
-{
-    return if defined($isSpd);
-    if (checkForArgumentAndRemoveFromARGV("--spd")) {
-        $isSpd = 1;
+   
+    #{spd add 
+    if (isSpd()){
+        $isQt=0;
         return;
     }
+    #spd add} 
+    
+    $isQt = defined($ENV{'QTDIR'});
 }
 
 sub isBlackBerry()
@@ -1048,6 +1038,21 @@ sub isEfl()
     return $isEfl;
 }
 
+#{spd add
+
+sub determineIsSpd()
+{
+    return if defined($isSpd);
+    $isSpd = checkForArgumentAndRemoveFromARGV("--spd");
+}
+
+sub isSpd()
+{
+    determineIsSpd();
+    return $isSpd;
+}
+#spd add}
+#
 sub isGtk()
 {
     determineIsGtk();
@@ -2051,10 +2056,8 @@ sub buildCMakeProjectOrExit($$$$@)
     exit(exitStatus(cleanCMakeGeneratedProject())) if $clean;
 
     $returnCode = exitStatus(generateBuildSystemFromCMakeProject($port, $prefixPath, @cmakeArgs));
-    printf("file: %s line: %s\n",__FILE__,__LINE__);
     exit($returnCode) if $returnCode;
     $returnCode = exitStatus(buildCMakeGeneratedProject($makeArgs));
-    printf("file: %s line: %s\n",__FILE__,__LINE__);
     exit($returnCode) if $returnCode;
 }
 
