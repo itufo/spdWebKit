@@ -16,25 +16,12 @@ void BitmapImage::invalidatePlatformData()
 {
 }
 
-static PassRefPtr<SharedBuffer> loadResourceSharedBufferFallback()
+void BitmapImage::checkForSolidColor()
 {
-    return SharedBuffer::create(); // TODO: fallback image?
 }
 
-static PassRefPtr<SharedBuffer> loadResourceSharedBuffer(const char* name)
+void BitmapImage::draw(GraphicsContext*, const FloatRect& dstRect, const FloatRect& srcRect, ColorSpace styleColorSpace, CompositeOperator)
 {
-    RefPtr<SharedBuffer> buffer = SharedBuffer::createWithContentsOfFile(makeString(DATA_DIR "/webkit-1.0/images/", name, ".png"));    
-    if (buffer)
-        return buffer.release();
-    return loadResourceSharedBufferFallback();
-}
-
-PassRefPtr<Image> Image::loadPlatformResource(const char* name)
-{
-    RefPtr<BitmapImage> img = BitmapImage::create();
-    RefPtr<SharedBuffer> buffer = loadResourceSharedBuffer(name);
-    img->setData(buffer.release(), true);
-    return img.release();
 }
 
 }

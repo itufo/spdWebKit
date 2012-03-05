@@ -26,6 +26,7 @@ LIST(APPEND WebCore_SOURCES
   platform/graphics/ImageSource.cpp
   platform/spd/RenderThemeSpd.cpp
   platform/spd/CursorSpd.cpp
+  platform/spd/ClipboardSpd.cpp
   platform/spd/DragDataSpd.cpp
   platform/graphics/spd/GraphicsContextSpd.cpp
   platform/graphics/spd/ImageBufferSpd.cpp
@@ -34,6 +35,7 @@ LIST(APPEND WebCore_SOURCES
   platform/graphics/spd/FontSpd.cpp
   platform/graphics/spd/FontCacheSpd.cpp
   platform/graphics/spd/FontPlatformDataSpd.cpp
+  platform/graphics/spd/GlyphPageSpd.cpp
   platform/image-decoders/ImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageReader.cpp
