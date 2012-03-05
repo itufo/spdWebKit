@@ -23,47 +23,10 @@ LIST(APPEND WebCore_SOURCES
   page/spd/DragControllerSpd.cpp
   page/spd/EventHandlerSpd.cpp
   platform/Cursor.cpp
-#  platform/efl/ClipboardEfl.cpp
-#  platform/efl/ContextMenuEfl.cpp
-#  platform/efl/ContextMenuItemEfl.cpp
-#  platform/efl/CursorEfl.cpp
-#  platform/efl/DragDataEfl.cpp
-#  platform/efl/DragImageEfl.cpp
-#  platform/efl/EflKeyboardUtilities.cpp
-#  platform/efl/EflScreenUtilities.cpp
-#  platform/efl/EventLoopEfl.cpp
-#  platform/efl/FileSystemEfl.cpp
-#  platform/efl/KURLEfl.cpp
-#  platform/efl/LanguageEfl.cpp
-#  platform/efl/LocalizedStringsEfl.cpp
-#  platform/efl/LoggingEfl.cpp
-#  platform/efl/MIMETypeRegistryEfl.cpp
-#  platform/efl/PasteboardEfl.cpp
-#  platform/efl/PlatformKeyboardEventEfl.cpp
-#  platform/efl/PlatformMouseEventEfl.cpp
-#  platform/efl/PlatformScreenEfl.cpp
-#  platform/efl/PlatformTouchEventEfl.cpp
-#  platform/efl/PlatformTouchPointEfl.cpp
-#  platform/efl/PlatformWheelEventEfl.cpp
-#  platform/efl/PopupMenuEfl.cpp
-#  platform/efl/RefPtrEfl.cpp
-#  platform/efl/RenderThemeEfl.cpp
-#  platform/efl/ScrollViewEfl.cpp
-#  platform/efl/ScrollbarEfl.cpp
-#  platform/efl/ScrollbarThemeEfl.cpp
-#  platform/efl/SearchPopupMenuEfl.cpp
-#  platform/efl/SharedBufferEfl.cpp
-#  platform/efl/SharedTimerEfl.cpp
-#  platform/efl/SoundEfl.cpp
-#  platform/efl/SystemTimeEfl.cpp
-#  platform/efl/TemporaryLinkStubs.cpp
-#  platform/efl/WidgetEfl.cpp
   platform/graphics/ImageSource.cpp
-#  platform/graphics/efl/GraphicsLayerEfl.cpp
-#  platform/graphics/efl/IconEfl.cpp
-#  platform/graphics/efl/ImageEfl.cpp
-#  platform/graphics/efl/IntPointEfl.cpp
-#  platform/graphics/efl/IntRectEfl.cpp
+  platform/spd/RenderThemeSpd.cpp
+  platform/spd/CursorSpd.cpp
+  platform/spd/DragDataSpd.cpp
   platform/image-decoders/ImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageReader.cpp
@@ -73,15 +36,6 @@ LIST(APPEND WebCore_SOURCES
   platform/image-decoders/jpeg/JPEGImageDecoder.cpp
   platform/image-decoders/png/PNGImageDecoder.cpp
   platform/image-decoders/webp/WEBPImageDecoder.cpp
-#  platform/network/soup/CookieJarSoup.cpp
-#  platform/network/soup/CredentialStorageSoup.cpp
-#  platform/network/soup/GOwnPtrSoup.cpp
-#  platform/network/soup/ProxyServerSoup.cpp
-#  platform/network/soup/ResourceHandleSoup.cpp
-#  platform/network/soup/ResourceRequestSoup.cpp
-#  platform/network/soup/ResourceResponseSoup.cpp
-#  platform/network/soup/SocketStreamHandleSoup.cpp
-#  platform/network/soup/SoupURIUtils.cpp
   platform/network/curl/CookieJarCurl.cpp
   platform/network/curl/CredentialStorageCurl.cpp
   platform/network/curl/DNSCurl.cpp
