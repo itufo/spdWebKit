@@ -27,6 +27,13 @@ LIST(APPEND WebCore_SOURCES
   platform/spd/RenderThemeSpd.cpp
   platform/spd/CursorSpd.cpp
   platform/spd/DragDataSpd.cpp
+  platform/graphics/spd/GraphicsContextSpd.cpp
+  platform/graphics/spd/ImageBufferSpd.cpp
+  platform/graphics/spd/BitmapImageSpd.cpp
+  platform/graphics/spd/PathSpd.cpp
+  platform/graphics/spd/FontSpd.cpp
+  platform/graphics/spd/FontCacheSpd.cpp
+  platform/graphics/spd/FontPlatformDataSpd.cpp
   platform/image-decoders/ImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageReader.cpp
