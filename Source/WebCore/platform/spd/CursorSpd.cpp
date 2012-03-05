@@ -13,6 +13,11 @@ Cursor::Cursor(const Cursor& other)
 
 }
 
+Cursor::Cursor(Image*, const IntPoint& hotSpot)
+{
+
+}
+
 Cursor::~Cursor()
 {
 
