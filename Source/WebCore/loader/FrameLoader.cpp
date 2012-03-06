@@ -855,39 +855,22 @@ ObjectContentType FrameLoader::defaultObjectContentType(const KURL& url, const S
     // We don't use MIMETypeRegistry::getMIMETypeForPath() because it returns "application/octet-stream" upon failure
     if (mimeType.isEmpty())
         mimeType = MIMETypeRegistry::getMIMETypeForExtension(extension);
-
-#if !PLATFORM(MAC) && !PLATFORM(CHROMIUM) && !PLATFORM(EFL) // Mac has no PluginDatabase, nor does Chromium or EFL
-
-//{spd add
-#if !PLATFORM(SPD)
+//{spd add (modify)
+#if !PLATFORM(MAC) && !PLATFORM(CHROMIUM) && !PLATFORM(EFL) && !PLATFORM(SPD) // Mac has no PluginDatabase, nor does Chromium or EFL
 //spd add}
 
     if (mimeType.isEmpty())
         mimeType = PluginDatabase::installedPlugins()->MIMETypeForExtension(extension);
 
-//{spd add
-#endif
-//spd add}
-
 #endif
 
     if (mimeType.isEmpty())
         return ObjectContentFrame; // Go ahead and hope that we can display the content.
-
-#if !PLATFORM(MAC) && !PLATFORM(CHROMIUM) && !PLATFORM(EFL) // Mac has no PluginDatabase, nor does Chromium or EFL
-
-//{spd add
-#if !PLATFORM(SPD)
+//{spd add (modify)
+#if !PLATFORM(MAC) && !PLATFORM(CHROMIUM) && !PLATFORM(EFL) && !PLATFORM(SPD) // Mac has no PluginDatabase, nor does Chromium or EFL
 //spd add}
 
     bool plugInSupportsMIMEType = PluginDatabase::installedPlugins()->isMIMETypeRegistered(mimeType);
-
-//{spd add
-#else
-    bool plugInSupportsMIMEType = false;
-#endif
-//spd add}
-
 #else
     bool plugInSupportsMIMEType = false;
 #endif
