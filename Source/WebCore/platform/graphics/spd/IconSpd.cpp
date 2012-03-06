@@ -10,20 +10,8 @@
 
 namespace WebCore {
 
-Icon::Icon()
-    : m_icon(0)
-{
-    notImplemented();
-}
-
 Icon::~Icon()
 {
-}
-
-PassRefPtr<Icon> Icon::createIconForFiles(const Vector<String>& filenames)
-{
-    notImplemented();
-    return 0;
 }
 
 void Icon::paint(GraphicsContext* context, const IntRect& rect)

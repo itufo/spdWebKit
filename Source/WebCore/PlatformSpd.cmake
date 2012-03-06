@@ -28,6 +28,10 @@ LIST(APPEND WebCore_SOURCES
   platform/spd/CursorSpd.cpp
   platform/spd/ClipboardSpd.cpp
   platform/spd/DragDataSpd.cpp
+  platform/spd/EditorSpd.cpp
+  platform/spd/KURLSpd.cpp
+  platform/spd/MIMETypeRegistrySpd.cpp
+  platform/spd/PasteboardSpd.cpp
   platform/graphics/spd/GraphicsContextSpd.cpp
   platform/graphics/spd/ImageBufferSpd.cpp
   platform/graphics/spd/BitmapImageSpd.cpp
@@ -35,7 +39,11 @@ LIST(APPEND WebCore_SOURCES
   platform/graphics/spd/FontSpd.cpp
   platform/graphics/spd/FontCacheSpd.cpp
   platform/graphics/spd/FontPlatformDataSpd.cpp
+  platform/graphics/spd/FontCustomPlatformData.cpp
   platform/graphics/spd/GlyphPageSpd.cpp
+  platform/graphics/spd/GradientSpd.cpp
+  platform/graphics/spd/IconSpd.cpp
+  platform/graphics/spd/ImageSpd.cpp
   platform/image-decoders/ImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageReader.cpp

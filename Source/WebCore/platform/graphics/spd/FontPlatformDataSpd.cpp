@@ -38,4 +38,9 @@ const FontPlatformData& FontPlatformData::platformDataAssign(const FontPlatformD
 {
 }
 
+const FontPlatformData& FontPlatformData::operator=(const FontPlatformData&)
+{
+
+}
+
 }

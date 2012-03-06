@@ -1,3 +1,6 @@
+#ifndef ImageBufferDataSpd_h
+#define ImageBufferDataSpd_h
+
 #include "OwnPtr.h"
 
 namespace WebCore {
@@ -10,3 +13,5 @@ public:
 };
 
 } // namespace WebCore
+
+#endif

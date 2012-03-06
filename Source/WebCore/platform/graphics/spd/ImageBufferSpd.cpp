@@ -1,5 +1,6 @@
 #include "config.h"
 #include "ImageBuffer.h"
+#include "ImageBufferDataSpd.h"
 
 #include "Base64.h"
 #include "BitmapImage.h"
@@ -15,6 +16,11 @@
 using namespace std;
 
 namespace WebCore {
+
+ImageBufferData::ImageBufferData(const IntSize& size)
+{
+
+}
 
 ImageBuffer::ImageBuffer(const IntSize& size, ColorSpace, RenderingMode, DeferralMode, bool& success)
     : m_data(size)

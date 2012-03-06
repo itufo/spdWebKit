@@ -24,4 +24,8 @@ void BitmapImage::draw(GraphicsContext*, const FloatRect& dstRect, const FloatRe
 {
 }
 
+bool FrameData::clear(bool clearMetadata)
+{
+}
+
 }
