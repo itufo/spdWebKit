@@ -32,6 +32,10 @@ LIST(APPEND WebCore_SOURCES
   platform/spd/KURLSpd.cpp
   platform/spd/MIMETypeRegistrySpd.cpp
   platform/spd/PasteboardSpd.cpp
+  platform/spd/PlatformKeyboardEventSpd.cpp
+  platform/spd/ScrollbarThemeSpd.cpp
+  platform/spd/SharedBufferSpd.cpp
+  platform/spd/WidgetSpd.cpp
   platform/graphics/spd/GraphicsContextSpd.cpp
   platform/graphics/spd/ImageBufferSpd.cpp
   platform/graphics/spd/BitmapImageSpd.cpp
@@ -44,6 +48,7 @@ LIST(APPEND WebCore_SOURCES
   platform/graphics/spd/GradientSpd.cpp
   platform/graphics/spd/IconSpd.cpp
   platform/graphics/spd/ImageSpd.cpp
+  platform/graphics/spd/SimpleFontDataSpd.cpp
   platform/image-decoders/ImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageDecoder.cpp
   platform/image-decoders/bmp/BMPImageReader.cpp
