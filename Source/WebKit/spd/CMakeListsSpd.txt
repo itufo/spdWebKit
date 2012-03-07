@@ -65,41 +65,9 @@ IF (ENABLE_NOTIFICATIONS)
 ENDIF ()
 
 LIST(APPEND WebKit_SOURCES
-#    spd/WebCoreSupport/test.cpp
-#    efl/WebCoreSupport/AssertMatchingEnums.cpp
     spd/WebCoreSupport/ChromeClientSpd.cpp
-#    efl/WebCoreSupport/DeviceOrientationClientEfl.cpp
-#    efl/WebCoreSupport/DeviceMotionClientEfl.cpp
-#    efl/WebCoreSupport/DragClientEfl.cpp
-#    efl/WebCoreSupport/DumpRenderTreeSupportEfl.cpp
-#    efl/WebCoreSupport/EditorClientEfl.cpp
     spd/WebCoreSupport/FrameLoaderClientSpd.cpp
-#    efl/WebCoreSupport/FrameNetworkingContextEfl.cpp
-#    efl/WebCoreSupport/FullscreenVideoControllerEfl.cpp
-#    efl/WebCoreSupport/IconDatabaseClientEfl.cpp
-#    efl/WebCoreSupport/StorageTrackerClientEfl.cpp
-#    efl/WebCoreSupport/InspectorClientEfl.cpp
-#    efl/WebCoreSupport/NotificationPresenterClientEfl.cpp
-
-#    efl/ewk/ewk_auth.cpp
-#    efl/ewk/ewk_auth_soup.cpp
-#    efl/ewk/ewk_contextmenu.cpp
-#    efl/ewk/ewk_cookies.cpp
-#    efl/ewk/ewk_frame.cpp
-#    efl/ewk/ewk_history.cpp
-#    efl/ewk/ewk_js.cpp
-#    efl/ewk/ewk_main.cpp
-#    efl/ewk/ewk_network.cpp
-#    efl/ewk/ewk_security_policy.cpp
-#    efl/ewk/ewk_settings.cpp
-#    efl/ewk/ewk_tiled_backing_store.cpp
-#    efl/ewk/ewk_tiled_matrix.cpp
-#    efl/ewk/ewk_tiled_model.cpp
-#    efl/ewk/ewk_util.cpp
-#    efl/ewk/ewk_view.cpp
-#    efl/ewk/ewk_view_single.cpp
-#    efl/ewk/ewk_view_tiled.cpp
-#    efl/ewk/ewk_window_features.cpp
+    spd/WebCoreSupport/DocumentLoaderSpd.cpp
 )
 
 LIST(APPEND WebKit_LIBRARIES
