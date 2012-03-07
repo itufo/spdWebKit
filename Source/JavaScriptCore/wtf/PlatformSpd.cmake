@@ -1,5 +1,5 @@
 LIST(APPEND WTF_SOURCES
-    #efl/MainThreadEfl.cpp
+    spd/MainThreadSpd.cpp
     #efl/OwnPtrEfl.cpp
     gobject/GOwnPtr.cpp
     gobject/GRefPtr.cpp

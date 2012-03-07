@@ -36,6 +36,15 @@ LIST(APPEND WebCore_SOURCES
   platform/spd/ScrollbarThemeSpd.cpp
   platform/spd/SharedBufferSpd.cpp
   platform/spd/WidgetSpd.cpp
+  platform/spd/LocalizedStringsSpd.cpp
+  platform/spd/DragImageSpd.cpp
+  platform/spd/FileSystemSpd.cpp
+  platform/spd/SSLKeyGeneratorSpd.cpp
+  platform/spd/LanguageSpd.cpp
+  platform/spd/PlatformScreenSpd.cpp
+  platform/spd/SharedTimerSpd.cpp
+  platform/spd/SoundSpd.cpp
+  platform/spd/SystemTimeSpd.cpp
   platform/graphics/spd/GraphicsContextSpd.cpp
   platform/graphics/spd/ImageBufferSpd.cpp
   platform/graphics/spd/BitmapImageSpd.cpp
@@ -67,7 +76,7 @@ LIST(APPEND WebCore_SOURCES
   platform/network/curl/ResourceHandleManager.cpp
   platform/network/curl/SocketStreamHandleCurl.cpp
   platform/posix/FileSystemPOSIX.cpp
-#  platform/text/efl/TextBreakIteratorInternalICUEfl.cpp
+  platform/text/spd/TextBreakIteratorInternalICUSpd.cpp
 )
 
 IF (ENABLE_NETSCAPE_PLUGIN_API)

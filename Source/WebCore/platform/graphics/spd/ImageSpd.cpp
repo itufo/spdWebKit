@@ -14,4 +14,10 @@ NativeImagePtr ImageFrame::asNewNativeImage() const
 {
 }
 
+
+PassRefPtr<Image> Image::loadPlatformResource(const char* name)
+{
+}
+
+
 }//namespace WebCore
