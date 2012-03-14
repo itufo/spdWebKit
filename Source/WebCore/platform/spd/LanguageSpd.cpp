@@ -3,9 +3,10 @@
 
 #include "PlatformString.h"
 #include <wtf/Vector.h>
+#include <locale.h>
 
 namespace WebCore {
-/*
+
 static String platformLanguage()
 {
     char* localeDefault = setlocale(LC_CTYPE, 0);
@@ -15,9 +16,12 @@ static String platformLanguage()
 
     return String(localeDefault).replace('_', '-');
 }
-*/
+
 Vector<String> platformUserPreferredLanguages()
 {
+    Vector<String> userPreferredLanguages;
+    userPreferredLanguages.append(platformLanguage());
+    return userPreferredLanguages;
 }
 
 }
