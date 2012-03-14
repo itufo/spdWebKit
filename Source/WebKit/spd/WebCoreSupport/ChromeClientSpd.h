@@ -1,64 +1,38 @@
-/*
- * Copyright (C) 2007 Holger Hans Peter Freyther
- * Copyright (C) 2008 INdT - Instituto Nokia de Tecnologia
- * Copyright (C) 2009-2010 ProFUSION embedded systems
- * Copyright (C) 2009-2010 Samsung Electronics
- * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public License
- * along with this library; see the file COPYING.LIB.  If not, write to
- * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301, USA.
- */
-
 #ifndef ChromeClientSpd_h
 #define ChromeClientSpd_h
-#include "spdWebKit.h"
+
 #include "ChromeClient.h"
-#include "KURL.h"
-#include "PopupMenu.h"
-#include "Frame.h"
-#include "FrameNetworkingContext.h"
-#if ENABLE(NOTIFICATIONS)
-#include "NotificationPresenter.h"
-#endif
 
+class WebView;
 
-namespace WebCore {
+namespace WebKit {
 
-class ChromeClientSpd : public ChromeClient {
+class ChromeClientSpd : public WebCore::ChromeClient {
 public:
-    explicit ChromeClientSpd(spd_Object* view);
-    virtual ~ChromeClientSpd();
+    ChromeClientSpd(WebView* webView);
 
     virtual void chromeDestroyed();
 
     virtual void* webView() const { return 0; }
-    virtual void setWindowRect(const FloatRect&);
-    virtual FloatRect windowRect();
+    virtual void setWindowRect(const WebCore::FloatRect&);
+    virtual WebCore::FloatRect windowRect();
 
-    virtual FloatRect pageRect();
+    virtual WebCore::FloatRect pageRect();
 
     virtual void focus();
     virtual void unfocus();
 
-    virtual bool canTakeFocus(FocusDirection);
-    virtual void takeFocus(FocusDirection);
+    virtual bool canTakeFocus(WebCore::FocusDirection);
+    virtual void takeFocus(WebCore::FocusDirection);
 
-    virtual void focusedNodeChanged(Node*);
-    virtual void focusedFrameChanged(Frame*);
+    virtual void focusedNodeChanged(WebCore::Node*);
+    virtual void focusedFrameChanged(WebCore::Frame*);
 
-    virtual Page* createWindow(Frame*, const FrameLoadRequest&, const WindowFeatures&, const NavigationAction&);
+    // The Frame pointer provides the ChromeClient with context about which
+    // Frame wants to create the new Page.  Also, the newly created window
+    // should not be shown to the user until the ChromeClient of the newly
+    // created Page has its show method called.
+    virtual WebCore::Page* createWindow(WebCore::Frame*, const WebCore::FrameLoadRequest&, const WebCore::WindowFeatures&, const WebCore::NavigationAction&);
     virtual void show();
 
     virtual bool canRunModal();
@@ -76,108 +50,115 @@ public:
     virtual void setMenubarVisible(bool);
     virtual bool menubarVisible();
 
-    virtual void createSelectPopup(PopupMenuClient*, int selected, const IntRect&);
-    virtual bool destroySelectPopup();
-
     virtual void setResizable(bool);
 
-    virtual void addMessageToConsole(MessageSource, MessageType, MessageLevel, const String& message,
-                                     unsigned int lineNumber, const String& sourceID);
+    virtual void addMessageToConsole(WebCore::MessageSource, WebCore::MessageType, WebCore::MessageLevel, const WTF::String& message, unsigned int lineNumber, const WTF::String& sourceID);
 
     virtual bool canRunBeforeUnloadConfirmPanel();
-    virtual bool runBeforeUnloadConfirmPanel(const String& message, Frame*);
+    virtual bool runBeforeUnloadConfirmPanel(const WTF::String& message, WebCore::Frame* frame);
 
     virtual void closeWindowSoon();
 
-    virtual void runJavaScriptAlert(Frame*, const String&);
-    virtual bool runJavaScriptConfirm(Frame*, const String&);
-    virtual bool runJavaScriptPrompt(Frame*, const String& message, const String& defaultValue, String& result);
-    virtual void setStatusbarText(const String&);
+    virtual void runJavaScriptAlert(WebCore::Frame*, const WTF::String&);
+    virtual bool runJavaScriptConfirm(WebCore::Frame*, const WTF::String&);
+    virtual bool runJavaScriptPrompt(WebCore::Frame*, const WTF::String& message, const WTF::String& defaultValue, WTF::String& result);
+    virtual void setStatusbarText(const WTF::String&);
     virtual bool shouldInterruptJavaScript();
     virtual WebCore::KeyboardUIMode keyboardUIMode();
 
-    virtual IntRect windowResizerRect() const;
+    virtual WebCore::IntRect windowResizerRect() const;
 
-    virtual void contentsSizeChanged(Frame*, const IntSize&) const;
-    virtual IntPoint screenToRootView(const IntPoint&) const;
-    virtual IntRect rootViewToScreen(const IntRect&) const;
+    // Methods used by HostWindow.
+    virtual void invalidateRootView(const WebCore::IntRect&, bool);
+    virtual void invalidateContentsAndRootView(const WebCore::IntRect&, bool);
+    virtual void invalidateContentsForSlowScroll(const WebCore::IntRect&, bool);
+    virtual void scroll(const WebCore::IntSize&, const WebCore::IntRect&, const WebCore::IntRect&);
+    virtual WebCore::IntPoint screenToRootView(const WebCore::IntPoint&) const;
+    virtual WebCore::IntRect rootViewToScreen(const WebCore::IntRect&) const;
     virtual PlatformPageClient platformPageClient() const;
-
+    virtual void contentsSizeChanged(WebCore::Frame*, const WebCore::IntSize&) const;
+    virtual void scrollRectIntoView(const WebCore::IntRect&) const; // Currently only Mac has a non empty implementation.
     virtual void scrollbarsModeDidChange() const;
-    virtual void mouseDidMoveOverElement(const HitTestResult&, unsigned modifierFlags);
+    virtual void setCursor(const WebCore::Cursor&);
+    virtual void setCursorHiddenUntilMouseMoves(bool);
+    // End methods used by HostWindow.
 
-    virtual void setToolTip(const String&, TextDirection);
+    virtual void mouseDidMoveOverElement(const WebCore::HitTestResult&, unsigned modifierFlags);
 
-    virtual void print(Frame*);
+    virtual void setToolTip(const WTF::String&, WebCore::TextDirection);
+
+    virtual void print(WebCore::Frame*);
 
 #if ENABLE(SQL_DATABASE)
-    virtual void exceededDatabaseQuota(Frame*, const String&);
+    virtual void exceededDatabaseQuota(WebCore::Frame*, const WTF::String& databaseName);
+#endif
+
+    // Callback invoked when the application cache fails to save a cache object
+    // because storing it would grow the database file past its defined maximum
+    // size or past the amount of free space on the device.
+    // The chrome client would need to take some action such as evicting some
+    // old caches.
+    virtual void reachedMaxAppCacheSize(int64_t spaceNeeded);
+
+    // Callback invoked when the application cache origin quota is reached. This
+    // means that the resources attempting to be cached via the manifest are
+    // more than allowed on this origin. This callback allows the chrome client
+    // to take action, such as prompting the user to ask to increase the quota
+    // for this origin.
+    virtual void reachedApplicationCacheOriginQuota(WebCore::SecurityOrigin*, int64_t totalSpaceNeeded);
+
+#if ENABLE(CONTEXT_MENUS)
+    virtual void showContextMenu() { }
 #endif
 
 #if ENABLE(NOTIFICATIONS)
     virtual WebCore::NotificationPresenter* notificationPresenter() const;
 #endif
 
-    virtual void reachedMaxAppCacheSize(int64_t spaceNeeded);
-    virtual void reachedApplicationCacheOriginQuota(SecurityOrigin*, int64_t totalSpaceNeeded);
+    // This can be either a synchronous or asynchronous call. The ChromeClient can display UI asking the user for permission
+    // to use Geolocation.
+    virtual void requestGeolocationPermissionForFrame(WebCore::Frame*, WebCore::Geolocation*);
+    virtual void cancelGeolocationPermissionRequestForFrame(WebCore::Frame*, WebCore::Geolocation*);
 
-#if ENABLE(CONTEXT_MENUS)
-    virtual void showContextMenu() { }
+    virtual void runOpenPanel(WebCore::Frame*, PassRefPtr<WebCore::FileChooser>);
+    // Asynchronous request to load an icon for specified filenames.
+    virtual void loadIconForFiles(const Vector<WTF::String>&, WebCore::FileIconLoader*);
+
+    // Notification that the given form element has changed. This function
+    // will be called frequently, so handling should be very fast.
+    virtual void formStateDidChange(const WebCore::Node*);
+
+#if USE(ACCELERATED_COMPOSITING)
+    // Pass 0 as the GraphicsLayer to detatch the root layer.
+    virtual void attachRootGraphicsLayer(WebCore::Frame*, WebCore::GraphicsLayer*);
+    // Sets a flag to specify that the next time content is drawn to the window,
+    // the changes appear on the screen in synchrony with updates to GraphicsLayers.
+    virtual void setNeedsOneShotDrawingSynchronization();
+    // Sets a flag to specify that the view needs to be updated, so we need
+    // to do an eager layout before the drawing.
+    virtual void scheduleCompositingLayerSync();
 #endif
+
+    virtual void setLastSetCursorToCurrentCursor();
 
 #if ENABLE(TOUCH_EVENTS)
     virtual void needTouchEvents(bool);
 #endif
 
-#if USE(ACCELERATED_COMPOSITING)
-    virtual void attachRootGraphicsLayer(Frame*, GraphicsLayer*);
-    virtual void setNeedsOneShotDrawingSynchronization();
-    virtual void scheduleCompositingLayerSync();
-    virtual CompositingTriggerFlags allowedCompositingTriggers() const;
-#endif
-
-#if ENABLE(FULLSCREEN_API)
-    virtual bool supportsFullScreenForElement(const WebCore::Element*, bool withKeyboard);
-    virtual void enterFullScreenForElement(WebCore::Element*);
-    virtual void exitFullScreenForElement(WebCore::Element*);
-#endif
-
-    virtual void runOpenPanel(Frame*, PassRefPtr<FileChooser>);
-    virtual void loadIconForFiles(const Vector<String>&, FileIconLoader*);
-    virtual void formStateDidChange(const Node*);
-
-    virtual void setCursor(const Cursor&);
-    virtual void setCursorHiddenUntilMouseMoves(bool);
-
-    virtual void scrollRectIntoView(const IntRect&) const { }
-
-    virtual void requestGeolocationPermissionForFrame(Frame*, Geolocation*);
-    virtual void cancelGeolocationPermissionRequestForFrame(Frame*, Geolocation*);
-    virtual void cancelGeolocationPermissionForFrame(Frame*, Geolocation*);
-
-    virtual void invalidateContents(const IntRect&, bool);
-    virtual void invalidateRootView(const IntRect&, bool);
-    virtual void invalidateContentsAndRootView(const IntRect&, bool);
-    virtual void invalidateContentsForSlowScroll(const IntRect&, bool);
-    virtual void scroll(const IntSize&, const IntRect&, const IntRect&);
-    virtual void cancelGeolocationPermissionRequestForFrame(Frame*);
-    virtual void iconForFiles(const Vector<String, 0u>&, PassRefPtr<FileChooser>);
-
-    virtual void dispatchViewportPropertiesDidChange(const ViewportArguments&) const;
-
     virtual bool selectItemWritingDirectionIsNatural();
     virtual bool selectItemAlignmentFollowsMenuWritingDirection();
     virtual bool hasOpenedPopup() const;
-    virtual PassRefPtr<PopupMenu> createPopupMenu(PopupMenuClient*) const;
-    virtual PassRefPtr<SearchPopupMenu> createSearchPopupMenu(PopupMenuClient*) const;
+    virtual PassRefPtr<WebCore::PopupMenu> createPopupMenu(WebCore::PopupMenuClient*) const;
+    virtual PassRefPtr<WebCore::SearchPopupMenu> createSearchPopupMenu(WebCore::PopupMenuClient*) const;
 
     virtual bool shouldRubberBandInDirection(WebCore::ScrollDirection) const { return true; }
     virtual void numWheelEventHandlersChanged(unsigned) { }
     virtual void numTouchEventHandlersChanged(unsigned) { }
 
-    spd_Object* m_view;
-    KURL m_hoveredLinkURL;
+private:
+    WebView* m_webView;
 };
-}
+
+} // namespace WebKit
 
 #endif // ChromeClientSpd_h

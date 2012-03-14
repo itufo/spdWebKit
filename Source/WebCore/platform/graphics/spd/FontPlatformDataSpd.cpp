@@ -43,4 +43,11 @@ const FontPlatformData& FontPlatformData::operator=(const FontPlatformData&)
 
 }
 
+#ifndef NDEBUG
+String FontPlatformData::description() const
+{
+    return String();
+}
+#endif
+
 }

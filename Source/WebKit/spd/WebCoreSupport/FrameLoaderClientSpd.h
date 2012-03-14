@@ -1,69 +1,25 @@
-/*
- * Copyright (C) 2006 Zack Rusin <zack@kde.org>
- * Copyright (C) 2006, 2011 Apple Inc. All rights reserved.
- * Copyright (C) 2008 Collabora Ltd. All rights reserved.
- * Copyright (C) 2008 INdT - Instituto Nokia de Tecnologia
- * Copyright (C) 2009-2010 ProFUSION embedded systems
- * Copyright (C) 2009-2010 Samsung Electronics
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
- * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 #ifndef FrameLoaderClientSpd_h
 #define FrameLoaderClientSpd_h
 
-#include "spdWebKit.h"
-#include "Frame.h"
-#include "FrameNetworkingContext.h"
 #include "FrameLoaderClient.h"
 #include "PluginView.h"
-#include "ResourceError.h"
 #include "ResourceResponse.h"
 
-namespace WebCore {
+class WebView;
 
-class FormState;
+namespace WebKit {
 
-class FrameLoaderClientSpd : public FrameLoaderClient {
- public:
-    explicit FrameLoaderClientSpd(spd_Object *view);
-    virtual ~FrameLoaderClientSpd() { }
+class FrameLoaderClientSpd : public WebCore::FrameLoaderClient {
+public:
+    FrameLoaderClientSpd(WebView*);
+    virtual ~FrameLoaderClientSpd();
     virtual void frameLoaderDestroyed();
 
-    void setWebFrame(spd_Object *frame) { m_frame = frame; }
-    spd_Object* webFrame() const { return m_frame; }
-    spd_Object* webView() const { return m_view; }
-
-    void setCustomUserAgent(const String&);
-    const String& customUserAgent() const;
+    WebView* webView() const { return m_webView; }
 
     virtual bool hasWebView() const;
-    virtual bool hasFrameView() const;
 
-    void callPolicyFunction(FramePolicyFunction, PolicyAction);
-
-    virtual void makeRepresentation(DocumentLoader*);
+    virtual void makeRepresentation(WebCore::DocumentLoader*);
     virtual void forceLayout();
     virtual void forceLayoutForNonHTML();
 
@@ -72,132 +28,126 @@ class FrameLoaderClientSpd : public FrameLoaderClient {
     virtual void detachedFromParent2();
     virtual void detachedFromParent3();
 
-    virtual void loadedFromCachedPage();
+    virtual void assignIdentifierToInitialRequest(unsigned long identifier, WebCore::DocumentLoader*, const WebCore::ResourceRequest&);
 
-    virtual void assignIdentifierToInitialRequest(unsigned long identifier, DocumentLoader*, const ResourceRequest&);
-
-    virtual void dispatchWillSendRequest(DocumentLoader*, unsigned long  identifier, ResourceRequest&, const ResourceResponse& redirectResponse);
-    virtual bool shouldUseCredentialStorage(DocumentLoader*, unsigned long identifier);
-    virtual void dispatchDidReceiveAuthenticationChallenge(DocumentLoader*, unsigned long identifier, const AuthenticationChallenge&);
-
-    virtual void dispatchDidPushStateWithinPage();
-    virtual void dispatchDidPopStateWithinPage();
-    virtual void dispatchDidReplaceStateWithinPage();
-    virtual void dispatchDidClearWindowObjectInWorld(WebCore::DOMWrapperWorld*);
-
-    virtual void dispatchDidCancelAuthenticationChallenge(DocumentLoader*, unsigned long  identifier, const AuthenticationChallenge&);
-    virtual void dispatchDidReceiveResponse(DocumentLoader*, unsigned long  identifier, const ResourceResponse&);
-    virtual void dispatchDidReceiveContentLength(DocumentLoader*, unsigned long identifier, int dataLength);
-    virtual void dispatchDidFinishLoading(DocumentLoader*, unsigned long  identifier);
-    virtual void dispatchDidFailLoading(DocumentLoader*, unsigned long  identifier, const ResourceError&);
-    virtual bool dispatchDidLoadResourceFromMemoryCache(DocumentLoader*, const ResourceRequest&, const ResourceResponse&, int length);
-    virtual void dispatchDidLoadResourceByXMLHttpRequest(unsigned long identifier, const String& sourceString);
+    virtual void dispatchWillSendRequest(WebCore::DocumentLoader*, unsigned long  identifier, WebCore::ResourceRequest&, const WebCore::ResourceResponse& redirectResponse);
+    virtual bool shouldUseCredentialStorage(WebCore::DocumentLoader*, unsigned long identifier);
+    virtual void dispatchDidReceiveAuthenticationChallenge(WebCore::DocumentLoader*, unsigned long identifier, const WebCore::AuthenticationChallenge&);
+    virtual void dispatchDidCancelAuthenticationChallenge(WebCore::DocumentLoader*, unsigned long  identifier, const WebCore::AuthenticationChallenge&);
+    virtual void dispatchDidReceiveResponse(WebCore::DocumentLoader*, unsigned long  identifier, const WebCore::ResourceResponse&);
+    virtual void dispatchDidReceiveContentLength(WebCore::DocumentLoader*, unsigned long identifier, int dataLength);
+    virtual void dispatchDidFinishLoading(WebCore::DocumentLoader*, unsigned long  identifier);
+    virtual void dispatchDidFailLoading(WebCore::DocumentLoader*, unsigned long  identifier, const WebCore::ResourceError&);
+    virtual bool dispatchDidLoadResourceFromMemoryCache(WebCore::DocumentLoader*, const WebCore::ResourceRequest&, const WebCore::ResourceResponse&, int length);
 
     virtual void dispatchDidHandleOnloadEvents();
     virtual void dispatchDidReceiveServerRedirectForProvisionalLoad();
     virtual void dispatchDidCancelClientRedirect();
-    virtual void dispatchWillPerformClientRedirect(const KURL&, double, double);
+    virtual void dispatchWillPerformClientRedirect(const WebCore::KURL&, double, double);
     virtual void dispatchDidChangeLocationWithinPage();
+    virtual void dispatchDidPushStateWithinPage();
+    virtual void dispatchDidReplaceStateWithinPage();
+    virtual void dispatchDidPopStateWithinPage();
     virtual void dispatchWillClose();
     virtual void dispatchDidReceiveIcon();
     virtual void dispatchDidStartProvisionalLoad();
-    virtual void dispatchDidReceiveTitle(const StringWithDirection&);
+    virtual void dispatchDidReceiveTitle(const WebCore::StringWithDirection&);
     virtual void dispatchDidChangeIcons(WebCore::IconType);
     virtual void dispatchDidCommitLoad();
-    virtual void dispatchDidFailProvisionalLoad(const ResourceError&);
-    virtual void dispatchDidFailLoad(const ResourceError&);
+    virtual void dispatchDidFailProvisionalLoad(const WebCore::ResourceError&);
+    virtual void dispatchDidFailLoad(const WebCore::ResourceError&);
     virtual void dispatchDidFinishDocumentLoad();
     virtual void dispatchDidFinishLoad();
     virtual void dispatchDidFirstLayout();
     virtual void dispatchDidFirstVisuallyNonEmptyLayout();
 
-    virtual Frame* dispatchCreatePage(const WebCore::NavigationAction&);
+    virtual WebCore::Frame* dispatchCreatePage(const WebCore::NavigationAction&);
     virtual void dispatchShow();
 
-    virtual void dispatchDecidePolicyForResponse(FramePolicyFunction, const ResourceResponse&, const ResourceRequest&);
-    virtual void dispatchDecidePolicyForNewWindowAction(FramePolicyFunction, const NavigationAction&, const ResourceRequest&, WTF::PassRefPtr<FormState>, const String& frameName);
-    virtual void dispatchDecidePolicyForNavigationAction(FramePolicyFunction, const NavigationAction&, const ResourceRequest&, WTF::PassRefPtr<FormState>);
+    virtual void dispatchDecidePolicyForResponse(WebCore::FramePolicyFunction, const WebCore::ResourceResponse&, const WebCore::ResourceRequest&);
+    virtual void dispatchDecidePolicyForNewWindowAction(WebCore::FramePolicyFunction, const WebCore::NavigationAction&, const WebCore::ResourceRequest&, WTF::PassRefPtr<WebCore::FormState>, const WTF::String& frameName);
+    virtual void dispatchDecidePolicyForNavigationAction(WebCore::FramePolicyFunction, const WebCore::NavigationAction&, const WebCore::ResourceRequest&, WTF::PassRefPtr<WebCore::FormState>);
     virtual void cancelPolicyCheck();
 
-    virtual void dispatchUnableToImplementPolicy(const ResourceError&);
+    virtual void dispatchUnableToImplementPolicy(const WebCore::ResourceError&);
 
-    virtual void dispatchWillSendSubmitEvent(HTMLFormElement*) { }
-    virtual void dispatchWillSubmitForm(FramePolicyFunction, WTF::PassRefPtr<FormState>);
+    virtual void dispatchWillSendSubmitEvent(WebCore::HTMLFormElement*) { }
+    virtual void dispatchWillSubmitForm(WebCore::FramePolicyFunction, WTF::PassRefPtr<WebCore::FormState>);
 
-    virtual void dispatchDidLoadMainResource(DocumentLoader*);
-    virtual void revertToProvisionalState(DocumentLoader*);
-    virtual void setMainDocumentError(DocumentLoader*, const ResourceError&);
+    virtual void dispatchDidLoadMainResource(WebCore::DocumentLoader*);
+    virtual void revertToProvisionalState(WebCore::DocumentLoader*);
+    virtual void setMainDocumentError(WebCore::DocumentLoader*, const WebCore::ResourceError&);
 
     virtual void postProgressStartedNotification();
     virtual void postProgressEstimateChangedNotification();
     virtual void postProgressFinishedNotification();
 
-    virtual PassRefPtr<Frame> createFrame(const KURL&, const String& name, HTMLFrameOwnerElement*,
-                               const String& referrer, bool allowsScrolling, int marginWidth, int marginHeight);
-    virtual void didTransferChildFrameToNewDocument(Page*);
-    virtual void transferLoadingResourceFromPage(WebCore::ResourceLoader*, const ResourceRequest&, WebCore::Page*);
-
-    virtual PassRefPtr<Widget> createPlugin(const IntSize&, HTMLPlugInElement*, const KURL&, const WTF::Vector<String>&, const WTF::Vector<String>&, const String&, bool);
-    virtual void redirectDataToPlugin(Widget* pluginWidget);
-    virtual PassRefPtr<Widget> createJavaAppletWidget(const IntSize&, HTMLAppletElement*, const KURL& baseURL, const WTF::Vector<String>& paramNames, const WTF::Vector<String>& paramValues);
-    virtual String overrideMediaType() const;
+    virtual PassRefPtr<WebCore::Frame> createFrame(const WebCore::KURL& url, const WTF::String& name, WebCore::HTMLFrameOwnerElement* ownerElement,
+                               const WTF::String& referrer, bool allowsScrolling, int marginWidth, int marginHeight);
+    virtual void didTransferChildFrameToNewDocument(WebCore::Page*);
+    virtual void transferLoadingResourceFromPage(WebCore::ResourceLoader*, const WebCore::ResourceRequest&, WebCore::Page*);
+    virtual PassRefPtr<WebCore::Widget> createPlugin(const WebCore::IntSize&, WebCore::HTMLPlugInElement*, const WebCore::KURL&, const WTF::Vector<WTF::String>&, const WTF::Vector<WTF::String>&, const WTF::String&, bool);
+    virtual void redirectDataToPlugin(WebCore::Widget* pluginWidget);
+    virtual PassRefPtr<WebCore::Widget> createJavaAppletWidget(const WebCore::IntSize&, WebCore::HTMLAppletElement*, const WebCore::KURL& baseURL, const WTF::Vector<WTF::String>& paramNames, const WTF::Vector<WTF::String>& paramValues);
+    virtual WTF::String overrideMediaType() const;
+    virtual void dispatchDidClearWindowObjectInWorld(WebCore::DOMWrapperWorld*);
     virtual void documentElementAvailable();
-
     virtual void didPerformFirstNavigation() const;
 
     virtual void registerForIconNotification(bool);
 
-    virtual ObjectContentType objectContentType(const KURL&, const String& mimeType, bool shouldPreferPlugInsForImages);
+    virtual WebCore::ObjectContentType objectContentType(const WebCore::KURL&, const WTF::String& mimeType, bool shouldPreferPlugInsForImages);
 
     virtual void setMainFrameDocumentReady(bool);
 
-    virtual void startDownload(const ResourceRequest&, const String& suggestedName = String());
+    virtual void startDownload(const WebCore::ResourceRequest&, const String& suggestedName = String());
 
-    virtual void willChangeTitle(DocumentLoader*);
-    virtual void didChangeTitle(DocumentLoader*);
+    virtual void willChangeTitle(WebCore::DocumentLoader*);
+    virtual void didChangeTitle(WebCore::DocumentLoader*);
 
-    virtual void committedLoad(DocumentLoader*, const char*, int);
-    virtual void finishedLoading(DocumentLoader*);
+    virtual void committedLoad(WebCore::DocumentLoader*, const char*, int);
+    virtual void finishedLoading(WebCore::DocumentLoader*);
 
     virtual void updateGlobalHistory();
     virtual void updateGlobalHistoryRedirectLinks();
-    virtual bool shouldGoToHistoryItem(HistoryItem*) const;
-    virtual bool shouldStopLoadingForHistoryItem(HistoryItem*) const;
+    virtual bool shouldGoToHistoryItem(WebCore::HistoryItem*) const;
+    virtual bool shouldStopLoadingForHistoryItem(WebCore::HistoryItem*) const;
+
     virtual void didDisplayInsecureContent();
-    virtual void didRunInsecureContent(SecurityOrigin*, const KURL&);
-    virtual void didDetectXSS(const KURL&, bool didBlockEntirePage);
+    virtual void didRunInsecureContent(WebCore::SecurityOrigin*, const WebCore::KURL&);
+    virtual void didDetectXSS(const WebCore::KURL&, bool didBlockEntirePage);
 
-    virtual ResourceError cancelledError(const ResourceRequest&);
-    virtual ResourceError blockedError(const ResourceRequest&);
-    virtual ResourceError cannotShowURLError(const ResourceRequest&);
-    virtual ResourceError interruptedForPolicyChangeError(const ResourceRequest&);
+    virtual WebCore::ResourceError cancelledError(const WebCore::ResourceRequest&);
+    virtual WebCore::ResourceError blockedError(const WebCore::ResourceRequest&);
+    virtual WebCore::ResourceError cannotShowURLError(const WebCore::ResourceRequest&);
+    virtual WebCore::ResourceError interruptedForPolicyChangeError(const WebCore::ResourceRequest&);
 
-    virtual ResourceError cannotShowMIMETypeError(const ResourceResponse&);
-    virtual ResourceError fileDoesNotExistError(const ResourceResponse&);
-    virtual ResourceError pluginWillHandleLoadError(const ResourceResponse&);
+    virtual WebCore::ResourceError cannotShowMIMETypeError(const WebCore::ResourceResponse&);
+    virtual WebCore::ResourceError fileDoesNotExistError(const WebCore::ResourceResponse&);
+    virtual WebCore::ResourceError pluginWillHandleLoadError(const WebCore::ResourceResponse&);
 
-    virtual bool shouldFallBack(const ResourceError&);
+    virtual bool shouldFallBack(const WebCore::ResourceError&);
 
-    virtual bool canHandleRequest(const ResourceRequest&) const;
-    virtual bool canShowMIMEType(const String&) const;
-    virtual bool canShowMIMETypeAsHTML(const String& MIMEType) const;
-    virtual bool representationExistsForURLScheme(const String&) const;
-    virtual String generatedMIMETypeForURLScheme(const String&) const;
+    virtual bool canHandleRequest(const WebCore::ResourceRequest&) const;
+    virtual bool canShowMIMEType(const WTF::String&) const;
+    virtual bool canShowMIMETypeAsHTML(const WTF::String&) const;
+    virtual bool representationExistsForURLScheme(const WTF::String&) const;
+    virtual WTF::String generatedMIMETypeForURLScheme(const WTF::String&) const;
 
     virtual void frameLoadCompleted();
-    virtual void saveViewStateToItem(HistoryItem*);
+    virtual void saveViewStateToItem(WebCore::HistoryItem*);
     virtual void restoreViewState();
     virtual void provisionalLoadStarted();
     virtual void didFinishLoad();
     virtual void prepareForDataSourceReplacement();
 
-    virtual WTF::PassRefPtr<DocumentLoader> createDocumentLoader(const ResourceRequest&, const SubstituteData&);
-    virtual void setTitle(const StringWithDirection& title, const KURL&);
+    virtual WTF::PassRefPtr<WebCore::DocumentLoader> createDocumentLoader(const WebCore::ResourceRequest&, const WebCore::SubstituteData&);
+    virtual void setTitle(const WebCore::StringWithDirection&, const WebCore::KURL&);
 
-    virtual String userAgent(const KURL&);
+    virtual WTF::String userAgent(const WebCore::KURL&);
 
-    virtual void savePlatformDataToCachedFrame(CachedFrame*);
-    virtual void transitionToCommittedFromCachedFrame(CachedFrame*);
+    virtual void savePlatformDataToCachedFrame(WebCore::CachedFrame*);
+    virtual void transitionToCommittedFromCachedFrame(WebCore::CachedFrame*);
     virtual void transitionToCommittedForNewPage();
 
     virtual void didSaveToPageCache();
@@ -206,25 +156,23 @@ class FrameLoaderClientSpd : public FrameLoaderClient {
     virtual void dispatchDidBecomeFrameset(bool);
 
     virtual bool canCachePage() const;
-    virtual void download(ResourceHandle*, const ResourceRequest&, const ResourceResponse&);
+    virtual void download(WebCore::ResourceHandle*, const WebCore::ResourceRequest&, const WebCore::ResourceResponse&);
 
     virtual PassRefPtr<WebCore::FrameNetworkingContext> createNetworkingContext();
- private:
-    spd_Object *m_view;
-    spd_Object *m_frame;
 
-    ResourceResponse m_response;
-    String m_userAgent;
-    String m_customUserAgent;
+    void setFrame(WebCore::Frame *frame) { m_frame = frame; }
+    WebCore::Frame *frame() { return m_frame; }
 
-    ResourceError m_loadError;
+private:
+    WebView* m_webView;
+    WebCore::Frame* m_frame;
+    WebCore::ResourceResponse m_response;
 
     // Plugin view to redirect data to
-    PluginView* m_pluginView;
+    WebCore::PluginView* m_pluginView;
     bool m_hasSentResponseToPlugin;
-    bool m_hasRepresentation;
 };
 
-}
+} // namespace WebKit
 
 #endif // FrameLoaderClientSpd_h

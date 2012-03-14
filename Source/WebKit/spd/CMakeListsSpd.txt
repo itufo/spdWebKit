@@ -65,9 +65,19 @@ IF (ENABLE_NOTIFICATIONS)
 ENDIF ()
 
 LIST(APPEND WebKit_SOURCES
+    spd/WebView.h
+    spd/WebView.cpp
+    spd/spdWebView.cpp
+
     spd/WebCoreSupport/ChromeClientSpd.cpp
+    #spd/WebCoreSupport/ContextMenuClientSpd.cpp
+    #spd/WebCoreSupport/DragClientSpd.cpp
+    #spd/WebCoreSupport/EditorClientSpd.cpp
     spd/WebCoreSupport/FrameLoaderClientSpd.cpp
-    spd/WebCoreSupport/DocumentLoaderSpd.cpp
+    spd/WebCoreSupport/FrameNetworkingContextSpd.cpp
+    spd/WebCoreSupport/InspectorClientSpd.cpp
+    #spd/WebCoreSupport/PlatformStrategiesSpd.cpp
+
 )
 
 LIST(APPEND WebKit_LIBRARIES
@@ -107,69 +117,8 @@ SET(WebKit_THEME ${THEME_BINARY_DIR}/default.edj)
 #  COMMAND ${EDJE_CC_EXECUTABLE} -v -id ${WEBKIT_DIR}/efl/DefaultTheme ${WebKit_THEME_DEFINITION} ${WEBKIT_DIR}/efl/DefaultTheme/default.edc ${WebKit_THEME}
 #  DEPENDS
 #    ${WEBKIT_DIR}/efl/DefaultTheme/default.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_knob_v.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_knob_press_v.png
 #    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_v.png
 #    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_knob_press_h.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_knob_h.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_fill_v.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_fill_h.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/slider/slider_h.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_focus_button.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_press.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/icon.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_normal.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_normal_button.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_hover_button.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/combo/combo_press_button.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/decoration/search_decoration.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/decoration/decoration_normal_button.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/field/field_hovered.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/field/search_field.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/field/field_normal.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/field/field_focused.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/cancel/cancel_normal_button.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/cancel/cancel_normal_button2.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/search/cancel/search_cancel.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/img_check_off_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/check.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/img_check_on_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/img_check_on_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/img_check_off_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/img_check_off.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/check/img_check_on.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/img_radio_on.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/img_radio_off_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/img_radio_off_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/img_radio_on_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/radio.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/img_radio_off.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/radio/img_radio_on_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/button/img_button_normal.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/button/img_button_press.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/button/img_button_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/button/img_button_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/button/button.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/entry/entry.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/entry/img_normal.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/entry/img_focused.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/entry/img_hovered.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/scrollbar/scrollbar_h.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/scrollbar/scrollbar_v.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/scrollbar/scrollbar_knob_v.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/scrollbar/scrollbar_knob_h.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/scrollbar/scrollbar.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/file/file_normal.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/file/file_press.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/file/file_hover.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/file/file_focus.png
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/file/file.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/progressbar/progressbar.edc
-#    ${WEBKIT_DIR}/efl/DefaultTheme/widget/progressbar/shelf_inset.png
 #    ${WEBKIT_DIR}/efl/DefaultTheme/widget/progressbar/bt_base.png
 #  VERBATIM
 #)
@@ -198,17 +147,6 @@ SET(SpdWebKit_HEADERS
 #    ${CMAKE_CURRENT_SOURCE_DIR}/spd/ewk/ewk_auth.h
 #    ${CMAKE_CURRENT_SOURCE_DIR}/spd/ewk/ewk_auth_soup.h
 #    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_contextmenu.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_cookies.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_frame.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_history.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_js.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_logging.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_main.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_network.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_security_policy.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_settings.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_view.h
-#    ${CMAKE_CURRENT_SOURCE_DIR}/efl/ewk/ewk_window_features.h
 )
 
 INSTALL(FILES ${SpdWebKit_HEADERS}
