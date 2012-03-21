@@ -45,6 +45,7 @@ LIST(APPEND WebCore_SOURCES
   platform/spd/SharedTimerSpd.cpp
   platform/spd/SoundSpd.cpp
   platform/spd/SystemTimeSpd.cpp
+  platform/spd/VirtualUser.cpp
   platform/graphics/spd/GraphicsContextSpd.cpp
   platform/graphics/spd/ImageBufferSpd.cpp
   platform/graphics/spd/BitmapImageSpd.cpp

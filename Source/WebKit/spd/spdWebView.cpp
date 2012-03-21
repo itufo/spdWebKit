@@ -38,7 +38,7 @@ SPD_GLOBAL spdWebView* spdWebView_new()
     
     WebView::initialize(&(me->m_view));
     me->m_view = new WebView(); 
-    me->m_user = new VirtualUser(me->m_view);
+    me->m_user = new VirtualUser(me->m_view->frame());
     return me;
 }
 

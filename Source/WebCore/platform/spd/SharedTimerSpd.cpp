@@ -1,6 +1,7 @@
 #include "config.h"
 #include "SharedTimer.h"
 #include "Threading.h"
+#include "VirtualUser.h"
 
 #include <wtf/Assertions.h>
 #include <wtf/CurrentTime.h>
@@ -45,12 +46,9 @@ void stopSharedTimer()
 
 void setSharedTimerFireInterval(double interval)
 {
-    extern char* url;
-    if(url!= NULL)
-    {
-        printf("load>%s\n",url);
-        url = NULL;
-    }
+    extern VirtualUser* pUser;
+    if(pUser)
+        pUser->exec();
     //printf("Thread[%d] set timer %f\n",currentThread(),interval);
     if(interval>-0.000001 && interval<0.000001 && _timerFunction)
     {
