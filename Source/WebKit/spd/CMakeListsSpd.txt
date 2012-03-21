@@ -68,6 +68,7 @@ LIST(APPEND WebKit_SOURCES
     spd/WebView.h
     spd/WebView.cpp
     spd/spdWebView.cpp
+    spd/VirtualUser.cpp
 
     spd/WebCoreSupport/ChromeClientSpd.cpp
     #spd/WebCoreSupport/ContextMenuClientSpd.cpp

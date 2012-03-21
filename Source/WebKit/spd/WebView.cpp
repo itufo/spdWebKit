@@ -16,8 +16,10 @@
 #include "InspectorClientSpd.h"
 #include "IntSize.h"
 #include "MainThread.h"
+#include "Threading.h"
 #include "NotImplemented.h"
 #include "Page.h"
+#include "markup.h"
 //#include "PlatformKeyboardEvent.h"
 //#include "PlatformMouseEvent.h"
 //#include "PlatformStrategiesSpd.h"
@@ -130,12 +132,25 @@ WebView::~WebView()
     delete m_page;
     //DestroyWindow(m_windowHandle);
 }
-
+/*
+void event_loop(void* data)
+{
+    WebView* pView = (WebView*)data;
+    while(1)
+    {
+          sleep(10);
+          printf("\n\n\n\n\n\n\n\nevent_loop()\n");
+          String text = pView->innerText();
+          text.show();
+    }
+}
+*/
 //void WebView::initialize(HINSTANCE instanceHandle)
-void WebView::initialize()
+void WebView::initialize(WebView** view)
 {
     JSC::initializeThreading();
     WTF::initializeMainThread();
+    //createThread(event_loop,view,"loader");
 /*
     PlatformStrategiesSpd::initialize();
 
@@ -221,8 +236,10 @@ void WebView::load(LPCWSTR url)
 }
 */
 
+
 void WebView::load(const String &url)
 {
+    //createThread(event_loop,this,"loader");  
     load(WebCore::ResourceRequest(url));
 }
 
@@ -238,7 +255,8 @@ void WebView::reload()
 
 WTF::String WebView::innerText()
 {
-    return m_frame->document()->body()->innerText();
+    return createMarkup(m_frame->document());
+    //return m_frame->document()->body()->innerText();
 }
 
 void WebView::stop()

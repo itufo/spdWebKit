@@ -4,6 +4,7 @@
 #include "IntRect.h"
 #include "OwnPtr.h"
 #include "PassRefPtr.h"
+#include "wtf/text/WTFString.h"
 
 namespace WTF {
 class String;
@@ -18,8 +19,11 @@ class KURL;
 class ResourceRequest;
 }
 
+void WebViewThread(void* data);
+
 class WebView {
 public:
+
     enum Features {
         NoFeature = 0,
         EnableDoubleBuffering = 1 << 0
@@ -30,7 +34,7 @@ public:
     ~WebView();
 
     //static void initialize(HINSTANCE instanceHandle);
-    static void initialize();
+    static void initialize(WebView**);
     static void cleanup();
 
     //HWND windowHandle() const { return m_windowHandle; }
@@ -42,6 +46,7 @@ public:
     void load(const WTF::String &url);
     void load(const WebCore::ResourceRequest &request);
     WTF::String innerText();
+    WTF::String m_url;
     void reload();
     void stop();
 

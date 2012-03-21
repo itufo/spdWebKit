@@ -1,5 +1,6 @@
 #include "config.h"
 #include "SharedTimer.h"
+#include "Threading.h"
 
 #include <wtf/Assertions.h>
 #include <wtf/CurrentTime.h>
@@ -15,55 +16,60 @@
 
 namespace WebCore {
 
-//struct event timer;
-//struct event_base* base = event_base_new();
+struct event timer;
+struct event_base* base =  event_base_new();
 int event_is_dispatch = 0;
 static void (*_timerFunction)();
 
 static void timer_cb(evutil_socket_t fd, short event, void *arg)
 {
-    printf("Fired!\n");
+    //printf("Fired!\n");
     if(_timerFunction)
        _timerFunction();
+    //printf("Fired return!\n");
 }
 
 void setSharedTimerFiredFunction(void (*func)())
 {
-    printf("setSharedTimerFiredFunction\n");
+    //printf("setSharedTimerFiredFunction\n");
     _timerFunction = func;
-    //event_assign(&timer,base,-1,0,timer_cb,(void*)&timer);
+    event_assign(&timer,base,-1,0,timer_cb,(void*)&timer);
 }
 
 
 void stopSharedTimer()
 {
-    printf("stop timer\n");
-    //event_del(&timer);
+    //printf("stop timer\n");
+    event_del(&timer);
 }
 
 void setSharedTimerFireInterval(double interval)
 {
-    printf("set timer %f\n",interval);
-    usleep(interval*1000);
-    _timerFunction();
-/*
-    struct event timer;
-    struct event_base* base = event_base_new();
-    event_assign(&timer,base,-1,0,timer_cb,(void*)&timer);
-    
+    extern char* url;
+    if(url!= NULL)
+    {
+        printf("load>%s\n",url);
+        url = NULL;
+    }
+    //printf("Thread[%d] set timer %f\n",currentThread(),interval);
+    if(interval>-0.000001 && interval<0.000001 && _timerFunction)
+    {
+        _timerFunction();
+        return;
+    }
+  
     struct timeval tv;
     evutil_timerclear(&tv);
     tv.tv_sec = 0;
     tv.tv_usec = interval*1000;
     event_add(&timer,&tv);
  
-    //if(!event_is_dispatch)
+    if(!event_is_dispatch)
     {
-    	event_base_dispatch(base);
         event_is_dispatch = 1;
+    	event_base_dispatch(base);
     }
-    event_base_free(base);
-*/
+
 }
 
 }

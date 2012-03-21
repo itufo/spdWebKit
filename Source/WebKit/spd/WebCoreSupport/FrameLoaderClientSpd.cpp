@@ -115,7 +115,7 @@ void FrameLoaderClientSpd::dispatchDidReceiveResponse(DocumentLoader*, unsigned 
 
 void FrameLoaderClientSpd::dispatchDecidePolicyForResponse(FramePolicyFunction policyFunction, const WebCore::ResourceResponse& response, const WebCore::ResourceRequest&)
 {
-    return;
+    //return;
     if (canShowMIMEType(response.mimeType()))
         (m_frame->loader()->policyChecker()->*policyFunction)(PolicyUse);
     else
@@ -408,12 +408,12 @@ bool FrameLoaderClientSpd::canHandleRequest(const WebCore::ResourceRequest&) con
 
 bool FrameLoaderClientSpd::canShowMIMEType(const String& type) const
 {
-/*
+
     return (MIMETypeRegistry::isSupportedImageMIMEType(type)
             || MIMETypeRegistry::isSupportedNonImageMIMEType(type)
             || MIMETypeRegistry::isSupportedMediaMIMEType(type)
             || PluginDatabase::installedPlugins()->isMIMETypeRegistered(type));
-*/
+
 }
 
 bool FrameLoaderClientSpd::canShowMIMETypeAsHTML(const String&) const
@@ -502,9 +502,12 @@ void FrameLoaderClientSpd::download(ResourceHandle*, const WebCore::ResourceRequ
     notImplemented();
 }
 
-ResourceError FrameLoaderClientSpd::cancelledError(const WebCore::ResourceRequest&)
+ResourceError FrameLoaderClientSpd::cancelledError(const WebCore::ResourceRequest& request)
 {
-    return ResourceError();
+    ResourceError error("Error", -999, request.url().string(),
+                        "Request cancelled");
+    error.setIsCancellation(true);
+    return error;
 }
 
 ResourceError FrameLoaderClientSpd::blockedError(const WebCore::ResourceRequest&)

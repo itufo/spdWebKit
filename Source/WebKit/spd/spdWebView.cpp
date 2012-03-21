@@ -19,6 +19,8 @@
 #include "MainThread.h"
 #include "NotImplemented.h"
 #include "Page.h"
+#include "VirtualUser.h"
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -26,6 +28,7 @@ using namespace WebCore;
 
 struct _spdWebView{
      WebView* m_view;
+     VirtualUser* m_user;
 };
 
 SPD_GLOBAL spdWebView* spdWebView_new()
@@ -33,8 +36,9 @@ SPD_GLOBAL spdWebView* spdWebView_new()
     spdWebView* me = (spdWebView*)malloc(sizeof(spdWebView));
     memset(me,0,sizeof(spdWebView));
     
-    WebView::initialize();
+    WebView::initialize(&(me->m_view));
     me->m_view = new WebView(); 
+    me->m_user = new VirtualUser(me->m_view);
     return me;
 }
 

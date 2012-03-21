@@ -13,6 +13,7 @@ void initializeMainThreadPlatform()
 
 void scheduleDispatchFunctionsOnMainThread()
 {
+    dispatchFunctionsFromMainThread();
 }
 
 }
