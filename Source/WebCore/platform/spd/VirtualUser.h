@@ -8,18 +8,20 @@
 #ifndef VIRTUALUSER_H_
 #define VIRTUALUSER_H_
 
-#include "WebView.h"
+#include "Frame.h"
 #include "wtf/text/WTFString.h"
 #include "Timer.h"
 
 namespace WTF{
     class String;
 }
+namespace WebCore{
+
 enum Option {OP_NULL,OP_LOAD,OP_DUMP};
 
 class VirtualUser{
 public:
-    VirtualUser(WebView* view);
+    VirtualUser(Frame* frame);
 
     static void init();
     void load(String& url);
@@ -32,9 +34,9 @@ public:
 private:
 
     WebCore::Timer<VirtualUser> m_userTimer;
-    WebView* m_view;
+    Frame* m_frame;
     Option m_option;
 };
 
-
+} // namespace WebCore
 #endif /* VIRTUALUSER_H_ */

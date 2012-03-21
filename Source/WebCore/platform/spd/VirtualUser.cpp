@@ -6,19 +6,15 @@
  */
 #include "config.h"
 #include "Threading.h"
+#include "markup.h"
 #include "VirtualUser.h"
-#include "WebView.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 
-using namespace WebCore;
 namespace WebCore
 {
-char* url = NULL;
-char szUrl[512] =
-{ 0 };
-}
+
 VirtualUser* pUser = NULL;
 
 void server_loop(void* data)
@@ -35,10 +31,11 @@ void server_loop(void* data)
     }
 }
 
-VirtualUser::VirtualUser(WebView* view) :
-        m_view(view), m_userTimer(this, &VirtualUser::userTimerFired)
+VirtualUser::VirtualUser(Frame* frame) :
+        m_frame(frame), m_userTimer(this, &VirtualUser::userTimerFired)
 {
     createThread(server_loop, this, "virtualuser");
+    pUser = this;
 }
 
 void VirtualUser::init()
@@ -74,7 +71,7 @@ void VirtualUser::startTimer()
 
 String VirtualUser::getHTML()
 {
-
+    return createMarkup(m_frame->document());
 }
 
 void VirtualUser::exec()
@@ -86,7 +83,8 @@ void VirtualUser::exec()
     case OP_LOAD:
         return;
     case OP_DUMP:
-        m_view->innerText().show();
+        m_option = OP_NULL;
+        printf("%s\n",getHTML().utf8(false).data());
         return;
     default:
         return;
@@ -108,3 +106,4 @@ void VirtualUser::userTimerFired(Timer<VirtualUser>*)
     //setNextFireTime(3000);
 }
 
+} // namespace WebCore
