@@ -31,11 +31,13 @@ public:
     String getHTML();
     void exec();
     void setOption(char* op);
+    String getAction();
 private:
 
     WebCore::Timer<VirtualUser> m_userTimer;
     Frame* m_frame;
     Option m_option;
+    String m_action;
 };
 
 } // namespace WebCore

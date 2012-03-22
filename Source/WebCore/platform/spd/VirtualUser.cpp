@@ -8,6 +8,7 @@
 #include "Threading.h"
 #include "markup.h"
 #include "VirtualUser.h"
+#include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -16,17 +17,20 @@ namespace WebCore
 {
 
 VirtualUser* pUser = NULL;
+//pthread_mutex_t user_option_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void server_loop(void* data)
 {
     VirtualUser* user = (VirtualUser*) data;
     while (1)
     {
+        //pthread_mutex_lock(user_option_mutex);
         printf("Option>\n");
         char op[32] = {0};
         gets(op);
         user->setOption(op);
         printf("%s\n", op);
+        //pthread_mutex_unlock(user_option_mutex);
         //user->timer().startOneShot(0);
     }
 }
@@ -49,6 +53,11 @@ void VirtualUser::setOption(char* op)
     if(strcmp(op,"OP_DUMP")==0)
     {
         m_option = OP_DUMP;
+    }
+    else if (strncmp(op,"http://",strlen("http://"))==0)
+    {
+        m_option = OP_LOAD;
+        m_action = op;
     }
 }
 
@@ -74,6 +83,11 @@ String VirtualUser::getHTML()
     return createMarkup(m_frame->document());
 }
 
+String VirtualUser::getAction()
+{
+    return m_action;
+}
+
 void VirtualUser::exec()
 {
     switch (m_option)
@@ -81,6 +95,7 @@ void VirtualUser::exec()
     case OP_NULL:
         return;
     case OP_LOAD:
+        m_frame->loader()->stopAllLoaders();
         return;
     case OP_DUMP:
         m_option = OP_NULL;
