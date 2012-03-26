@@ -7,7 +7,9 @@
 #include "config.h"
 #include "Threading.h"
 #include "markup.h"
+#include "SharedTimer.h"
 #include "VirtualUser.h"
+#include <event2/event.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -44,6 +46,11 @@ VirtualUser::VirtualUser(Frame* frame) :
 
 void VirtualUser::init()
 {
+}
+
+void VirtualUser::clearAction()
+{
+    m_action = "";
 }
 
 void VirtualUser::setOption(char* op)
@@ -88,22 +95,32 @@ String VirtualUser::getAction()
     return m_action;
 }
 
-void VirtualUser::exec()
+int VirtualUser::exec()
 {
     switch (m_option)
     {
     case OP_NULL:
-        return;
+        break;
     case OP_LOAD:
+        m_option = OP_NULL;
         m_frame->loader()->stopAllLoaders();
-        return;
+        extern struct event_base* base;
+        if(base)
+        {
+            //struct event_base* old_base = base;
+            base = NULL; 
+            //event_base_free(old_base);
+            stopSharedTimer();
+        }
+        return -1;
     case OP_DUMP:
         m_option = OP_NULL;
         printf("%s\n",getHTML().utf8(false).data());
-        return;
+        break;
     default:
-        return;
+        break;
     }
+    return 0;
 }
 
 void VirtualUser::userTimerFired(Timer<VirtualUser>*)

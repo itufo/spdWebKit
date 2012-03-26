@@ -29,8 +29,9 @@ public:
     void startTimer();
     void userTimerFired( WebCore::Timer<VirtualUser>* );
     String getHTML();
-    void exec();
+    int exec();
     void setOption(char* op);
+    void clearAction();
     String getAction();
 private:
 

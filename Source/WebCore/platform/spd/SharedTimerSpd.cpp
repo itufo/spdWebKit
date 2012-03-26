@@ -41,21 +41,33 @@ void setSharedTimerFiredFunction(void (*func)())
 void stopSharedTimer()
 {
     //printf("stop timer\n");
-    event_del(&timer);
+    if(base)
+    {
+        event_del(&timer);
+    } 
 }
 
 void setSharedTimerFireInterval(double interval)
 {
     extern VirtualUser* pUser;
     if(pUser)
-        pUser->exec();
+    {
+        if(pUser->exec())
+            return;
+    }
     //printf("Thread[%d] set timer %f\n",currentThread(),interval);
     if(interval>-0.000001 && interval<0.000001 && _timerFunction)
     {
         _timerFunction();
         return;
     }
-  
+    if(base == NULL)
+    {   
+        printf("\n\nevent_base_new()\n\n");
+        base = event_base_new();
+        event_assign(&timer,base,-1,0,timer_cb,(void*)&timer);
+        event_is_dispatch = 0;
+    }
     struct timeval tv;
     evutil_timerclear(&tv);
     tv.tv_sec = 0;

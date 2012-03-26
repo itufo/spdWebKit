@@ -45,9 +45,22 @@ SPD_GLOBAL spdWebView* spdWebView_new()
 
 SPD_GLOBAL int spdWebView_load(spdWebView* me, const char* url)
 {
-    String str(url);
-    me->m_view->load(str);
-    String text = me->m_view->innerText();
-    text.show();
+    String strUrl = url;
+    me->m_view->load(strUrl);
+    printf("%s\n\n\n\n",me->m_user->getHTML().utf8(false).data());
+    while(1)
+    {
+        if(me->m_user->getAction().length()<1)
+        {
+            sleep(1);
+            continue;
+        }
+        me->m_user->getAction().show();
+        String str = me->m_user->getAction();
+        me->m_user->clearAction();
+        me->m_view->load(str);
+        printf("%s\n\n\n\n",me->m_view->innerText().utf8(false).data());
+    }
     return 0;
 }
+
