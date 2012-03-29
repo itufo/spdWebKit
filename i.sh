@@ -5,3 +5,4 @@ sudo mkdir /usr/local/include/spdWebKit/
 #sudo cp Source/WebKit/spd/WebCoreSupport/spdWebKit.h /usr/local/include/spdWebKit
 sudo cp Source/WebKit/spd/WebView.h /usr/local/include/spdWebKit
 sudo cp Source/WebKit/spd/spdWebView.h /usr/local/include/spdWebKit
+sudo cp Source/WebKit/spd/EventHandle.h /usr/local/include/spdWebKit

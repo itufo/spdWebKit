@@ -1,6 +1,6 @@
 LIST(APPEND WebCore_LINK_FLAGS
-#    ${ECORE_X_LDFLAGS}
-#    ${EFLDEPS_LDFLAGS}
+    ${ECORE_X_LDFLAGS}
+    ${SPDDEPS_LDFLAGS}
 )
 
 LIST(APPEND WebCore_INCLUDE_DIRECTORIES
@@ -46,6 +46,8 @@ LIST(APPEND WebCore_SOURCES
   platform/spd/SoundSpd.cpp
   platform/spd/SystemTimeSpd.cpp
   platform/spd/VirtualUser.cpp
+  platform/spd/EventLoopSpd.cpp
+  platform/spd/SEvent.cpp
   platform/graphics/spd/GraphicsContextSpd.cpp
   platform/graphics/spd/ImageBufferSpd.cpp
   platform/graphics/spd/BitmapImageSpd.cpp
@@ -199,8 +201,8 @@ ENDIF ()
 
 LIST(APPEND WebCore_LIBRARIES
 #  ${Cairo_LIBRARIES}
-#  ${ECORE_X_LIBRARIES}
-#  ${EFLDEPS_LIBRARIES}
+  ${ECORE_X_LIBRARIES}
+  ${SPDDEPS_LIBRARIES}
 #  ${EVAS_LIBRARIES}
   ${FREETYPE_LIBRARIES}
   ${ICU_LIBRARIES}
@@ -222,8 +224,8 @@ ENDIF ()
 
 LIST(APPEND WebCore_INCLUDE_DIRECTORIES
 #  ${Cairo_INCLUDE_DIRS}
-#  ${ECORE_X_INCLUDE_DIRS}
-#  ${EFLDEPS_INCLUDE_DIRS}
+  ${ECORE_X_INCLUDE_DIRS}
+  ${SPDDEPS_INCLUDE_DIRS}
 #  ${EVAS_INCLUDE_DIRS}
   ${FREETYPE_INCLUDE_DIRS}
   ${ICU_INCLUDE_DIRS}

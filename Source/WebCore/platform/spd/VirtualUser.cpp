@@ -11,6 +11,7 @@
 #include "VirtualUser.h"
 #include <event2/event.h>
 #include <pthread.h>
+#include <Ecore.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -23,14 +24,18 @@ VirtualUser* pUser = NULL;
 
 void server_loop(void* data)
 {
-    VirtualUser* user = (VirtualUser*) data;
     while (1)
     {
+        if(pUser == NULL)
+        {
+            sleep(1);
+            continue;
+        }
         //pthread_mutex_lock(user_option_mutex);
         printf("Option>\n");
         char op[32] = {0};
         gets(op);
-        user->setOption(op);
+        pUser->setOption(op);
         printf("%s\n", op);
         //pthread_mutex_unlock(user_option_mutex);
         //user->timer().startOneShot(0);
@@ -40,12 +45,12 @@ void server_loop(void* data)
 VirtualUser::VirtualUser(Frame* frame) :
         m_frame(frame), m_userTimer(this, &VirtualUser::userTimerFired)
 {
-    createThread(server_loop, this, "virtualuser");
     pUser = this;
 }
 
 void VirtualUser::init()
 {
+    createThread(server_loop, NULL, "virtualuser");
 }
 
 void VirtualUser::clearAction()
@@ -90,6 +95,11 @@ String VirtualUser::getHTML()
     return createMarkup(m_frame->document());
 }
 
+void VirtualUser::setAction(char* action)
+{
+    m_action = action;
+}
+
 String VirtualUser::getAction()
 {
     return m_action;
@@ -103,15 +113,9 @@ int VirtualUser::exec()
         break;
     case OP_LOAD:
         m_option = OP_NULL;
+        ecore_main_loop_quit();
         m_frame->loader()->stopAllLoaders();
-        extern struct event_base* base;
-        if(base)
-        {
-            //struct event_base* old_base = base;
-            base = NULL; 
-            //event_base_free(old_base);
-            stopSharedTimer();
-        }
+        //m_frame->loader()->changeLocation(m_frame->document()->securityOrigin(), m_frame->document()->completeURL(getAction()), "", false, false);
         return -1;
     case OP_DUMP:
         m_option = OP_NULL;

@@ -1,12 +1,23 @@
 #include <stdio.h>
-//#include <spdWebKit/DocumentLoaderSpd.h>
-#include <spdWebKit/spdWebView.h>
+#include <spdWebKit/EventHandle.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+void* client_work(void* param)
+{
+    EventHandle* pHandle = (EventHandle*)param;
+    pHandle->start();
+    pHandle->load("http://localhost/test2.html");
+    sleep(4);
+    char* html  = pHandle->dumpHTML();
+    printf("%s\n\n",html);
+    exit(0);
+}
 
 int main(int argc, char* argv[])
 {
-	printf("Hello world!\n");
-	//spdDocumentLoader_new("http://www.baidu.com/");
-	spdWebView* view = spdWebView_new();
-        spdWebView_load(view,argc<2?"http://www.baidu.com/":argv[1]);
+        EventHandle::init();
+        EventHandle* pHandle = new EventHandle();
+        pHandle->event_loop(client_work);
         return 0;
 }

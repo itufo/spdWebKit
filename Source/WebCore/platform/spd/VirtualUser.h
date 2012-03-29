@@ -33,6 +33,7 @@ public:
     void setOption(char* op);
     void clearAction();
     String getAction();
+    void setAction(char*);
 private:
 
     WebCore::Timer<VirtualUser> m_userTimer;
