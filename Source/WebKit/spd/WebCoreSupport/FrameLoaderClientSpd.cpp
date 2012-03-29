@@ -411,8 +411,8 @@ bool FrameLoaderClientSpd::canShowMIMEType(const String& type) const
 
     return (MIMETypeRegistry::isSupportedImageMIMEType(type)
             || MIMETypeRegistry::isSupportedNonImageMIMEType(type)
-            || MIMETypeRegistry::isSupportedMediaMIMEType(type)
-            || PluginDatabase::installedPlugins()->isMIMETypeRegistered(type));
+            || MIMETypeRegistry::isSupportedMediaMIMEType(type));
+    //        || PluginDatabase::installedPlugins()->isMIMETypeRegistered(type));
 
 }
 
