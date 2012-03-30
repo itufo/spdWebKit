@@ -5,10 +5,12 @@
 #include "OwnPtr.h"
 #include "PassRefPtr.h"
 #include "wtf/text/WTFString.h"
+#include "wtf/text/AtomicString.h"
 #include "Element.h"
 
 namespace WTF {
 class String;
+class AtomicString;
 }
 
 namespace WebCore {
@@ -18,6 +20,7 @@ class FrameView;
 class HTMLFrameOwnerElement;
 class KURL;
 class ResourceRequest;
+class Element;
 }
 
 void WebViewThread(void* data);
