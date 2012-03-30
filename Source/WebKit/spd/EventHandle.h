@@ -30,7 +30,7 @@ public:
 
     int setElementValue(char* value);
 
-    int check();
+    int click();
 
     void event_loop(client_cb func);
 
@@ -43,7 +43,7 @@ public:
     static int ET_QUIT;
     static int ET_GETELEMENT;
     static int ET_SETVALUE;
-    static int ET_CHECK;
+    static int ET_CLICK;
 
 private:
     char m_url[512];

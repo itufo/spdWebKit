@@ -280,6 +280,12 @@ int WebView::setCurrentElementValue(char* value)
     return 0;
 }
 
+int WebView::chick()
+{
+    m_curElement->onclick();
+    return 0;
+}
+
 /*
 void WebView::paint(HDC hDC, const IntRect& clipRect)
 {

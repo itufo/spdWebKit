@@ -27,7 +27,7 @@ int EventHandle::ET_DUMPHTML = SEvent_type_new();
 int EventHandle::ET_QUIT = SEvent_type_new();
 int EventHandle::ET_GETELEMENT = SEvent_type_new();
 int EventHandle::ET_SETVALUE = SEvent_type_new();
-int EventHandle::ET_CHECK = SEvent_type_new();
+int EventHandle::ET_CLICK = SEvent_type_new();
 
 bool OnStart(void* param);
 bool OnAlive(void* param);
@@ -36,7 +36,7 @@ bool OnDumpHTML(void* param);
 bool OnQuit(void* param);
 bool OnGetElementById(void* param);
 bool OnSetElementValue(void* param);
-bool OnCheck(void* param);
+bool OnClick(void* param);
 
 SPD_GLOBAL int EventHandle::init()
 {
@@ -60,7 +60,7 @@ SPD_GLOBAL EventHandle::EventHandle()
     SEvent_handler_add(ET_QUIT,OnQuit);
     SEvent_handler_add(ET_GETELEMENT, OnGetElementById);
     SEvent_handler_add(ET_SETVALUE,OnSetElementValue);
-    SEvent_handler_add(ET_CHECK,OnCheck);
+    SEvent_handler_add(ET_CLICK,OnClick);
 
 }
 
@@ -111,9 +111,9 @@ SPD_GLOBAL int EventHandle::setElementValue(char* value)
     return 0;
 }
 
-SPD_GLOBAL int EventHandle::check()
+SPD_GLOBAL int EventHandle::click()
 {
-    SEvent_add(EventHandle::ET_CHECK, NULL);
+    SEvent_add(EventHandle::ET_CLICK, NULL);
     return 0;
 }
 
@@ -123,7 +123,7 @@ void *cmd(void *arg)
    while(1)
    {
        char cmd[512] = {0};
-       printf("start/load/dump/quit?\n");
+       printf("start/load/get/set/click/dump/quit?\n");
        gets(cmd);
        if(strcmp(cmd,"start")==0)
        {
@@ -135,6 +135,24 @@ void *cmd(void *arg)
            memset(cmd,0,512);
            gets(cmd);
            pHandle->load(cmd);
+       }
+       else if(strcmp(cmd,"get")==0)
+       {
+           printf("id:");
+           memset(cmd,0,512);
+           gets(cmd);
+           pHandle->getElementById(cmd);
+       }
+       else if(strcmp(cmd,"set")==0)
+       {
+           printf("value:");
+           memset(cmd,0,512);
+           gets(cmd);
+           pHandle->setElementValue(cmd);
+       }
+       else if(strcmp(cmd,"click")==0)
+       {
+           pHandle->click();
        }
        else if(strcmp(cmd,"dump")==0)
        {
@@ -237,7 +255,7 @@ bool OnSetElementValue(void* param)
     return true;
 }
 
-bool OnCheck(void* param)
+bool OnClick(void* param)
 {
     return true;
 }
