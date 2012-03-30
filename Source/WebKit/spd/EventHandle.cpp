@@ -103,7 +103,7 @@ SPD_GLOBAL int EventHandle::getElementById(char* id)
 {
     char* buf = (char*)malloc(strlen(id)+1);
     memset(buf,0,strlen(id)+1);
-    strncpy(buf,id,strlen(buf));
+    strncpy(buf,id,strlen(id));
     SEvent_add(EventHandle::ET_GETELEMENT, buf);
     return 0;
 }
@@ -112,7 +112,7 @@ SPD_GLOBAL int EventHandle::setElementValue(char* value)
 {
     char* buf = (char*)malloc(strlen(value)+1);
     memset(buf,0,strlen(value)+1);
-    strncpy(buf,value,strlen(buf));
+    strncpy(buf,value,strlen(value));
     SEvent_add(EventHandle::ET_SETVALUE, buf);
     return 0;
 }
