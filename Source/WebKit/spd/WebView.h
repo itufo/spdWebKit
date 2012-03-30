@@ -84,7 +84,7 @@ private:
     bool m_enableDoubleBuffer;
     //OwnPtr<HDC> m_doubleBufferDC;
     //OwnPtr<HBITMAP> m_doubleBufferBitmap;
-    Element* m_curElement;
+    WebCore::Element* m_curElement;
 };
 
 #endif // WebView_h

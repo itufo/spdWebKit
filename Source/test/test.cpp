@@ -7,8 +7,12 @@ void* client_work(void* param)
 {
     EventHandle* pHandle = (EventHandle*)param;
     pHandle->start();
-    pHandle->load("http://localhost/test2.html");
-    sleep(4);
+    pHandle->load("http://localhost/test3.html");
+    sleep(1);
+    pHandle->getElementById("test");
+    sleep(1);
+    pHandle->setElementValue("Hello World!");
+    sleep(1);
     char* html  = pHandle->dumpHTML();
     printf("%s\n\n",html);
     exit(0);

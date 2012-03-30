@@ -274,7 +274,9 @@ int WebView::setCurrentElementById(char* id)
 int WebView::setCurrentElementValue(char* value)
 {
     ExceptionCode e;
-    m_curElement->setAttribute(AtomicString("value"),AtomicString(value),&e);
+    AtomicString AttrName("value");
+    AtomicString AtrrValue(value);
+    m_curElement->setAttribute(AttrName,AtrrValue,e);
     return 0;
 }
 
