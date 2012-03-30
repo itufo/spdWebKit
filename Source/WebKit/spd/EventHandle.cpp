@@ -156,9 +156,9 @@ void *cmd(void *arg)
        }
        else if(strcmp(cmd,"dump")==0)
        {
-           pHandle->dumpHTML();
+           char* buf = pHandle->dumpHTML();
            sleep(1);
-           printf("%s\n",pHandle->m_buf);
+           printf("%s\n",buf);
        }
        else if(strcmp(cmd,"quit")==0)
        {
