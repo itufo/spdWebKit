@@ -5,6 +5,7 @@
 #include "OwnPtr.h"
 #include "PassRefPtr.h"
 #include "wtf/text/WTFString.h"
+#include "Element.h"
 
 namespace WTF {
 class String;
