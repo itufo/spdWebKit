@@ -101,13 +101,19 @@ SPD_GLOBAL int EventHandle::quit()
 
 SPD_GLOBAL int EventHandle::getElementById(char* id)
 {
-    SEvent_add(EventHandle::ET_GETELEMENT, id);
+    char* buf = (char*)malloc(strlen(id)+1);
+    memset(buf,0,strlen(id)+1);
+    strncpy(buf,id,strlen(buf));
+    SEvent_add(EventHandle::ET_GETELEMENT, buf);
     return 0;
 }
 
 SPD_GLOBAL int EventHandle::setElementValue(char* value)
 {
-    SEvent_add(EventHandle::ET_SETVALUE, value);
+    char* buf = (char*)malloc(strlen(value)+1);
+    memset(buf,0,strlen(value)+1);
+    strncpy(buf,value,strlen(buf));
+    SEvent_add(EventHandle::ET_SETVALUE, buf);
     return 0;
 }
 
@@ -247,6 +253,7 @@ bool OnGetElementById(void* param)
 {
     char* id = (char*)param;
     g_pView->setCurrentElementById(id);
+    free(id);
     return true;
 }
 
@@ -254,6 +261,7 @@ bool OnSetElementValue(void* param)
 {
     char* value = (char*)param;
     g_pView->setCurrentElementValue(value);
+    free(value);
     return true;
 }
 
