@@ -26,6 +26,12 @@ public:
 
     int quit();
 
+    int getElementById(char* id);
+
+    int setElementValue(char* value);
+
+    int check();
+
     void event_loop(client_cb func);
 
 
@@ -35,6 +41,9 @@ public:
     static int ET_LOAD;
     static int ET_DUMPHTML;
     static int ET_QUIT;
+    static int ET_GETELEMENT;
+    static int ET_SETVALUE;
+    static int ET_CHECK;
 
 private:
     char m_url[512];

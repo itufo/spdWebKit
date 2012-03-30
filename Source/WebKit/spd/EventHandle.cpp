@@ -25,12 +25,18 @@ int EventHandle::ET_ALIVE = SEvent_type_new();
 int EventHandle::ET_LOAD = SEvent_type_new();
 int EventHandle::ET_DUMPHTML = SEvent_type_new();
 int EventHandle::ET_QUIT = SEvent_type_new();
+int EventHandle::ET_GETELEMENT = SEvent_type_new();
+int EventHandle::ET_SETVALUE = SEvent_type_new();
+int EventHandle::ET_CHECK = SEvent_type_new();
 
 bool OnStart(void* param);
 bool OnAlive(void* param);
 bool OnLoad(void* param);
 bool OnDumpHTML(void* param);
 bool OnQuit(void* param);
+bool OnGetElementById(void* param);
+bool OnSetElementValue(void* param);
+bool OnCheck(void* param);
 
 SPD_GLOBAL int EventHandle::init()
 {
@@ -52,6 +58,9 @@ SPD_GLOBAL EventHandle::EventHandle()
     SEvent_handler_add(ET_LOAD, OnLoad);
     SEvent_handler_add(ET_DUMPHTML,OnDumpHTML);
     SEvent_handler_add(ET_QUIT,OnQuit);
+    SEvent_handler_add(ET_GETELEMENT, OnGetElementById);
+    SEvent_handler_add(ET_SETVALUE,OnSetElementValue);
+    SEvent_handler_add(ET_CHECK,OnCheck);
 
 }
 
@@ -90,6 +99,23 @@ SPD_GLOBAL int EventHandle::quit()
     return 0;
 }
 
+SPD_GLOBAL int EventHandle::getElementById(char* id)
+{
+    SEvent_add(EventHandle::ET_GETELEMENT, id);
+    return 0;
+}
+
+SPD_GLOBAL int EventHandle::setElementValue(char* value)
+{
+    SEvent_add(EventHandle::ET_SETVALUE, value);
+    return 0;
+}
+
+SPD_GLOBAL int EventHandle::check()
+{
+    SEvent_add(EventHandle::ET_CHECK, NULL);
+    return 0;
+}
 
 void *cmd(void *arg)
 {
@@ -194,4 +220,24 @@ bool OnDumpHTML(void* param)
 bool OnQuit(void* param)
 {
     exit(0);
+}
+
+
+bool OnGetElementById(void* param)
+{
+    char* id = (char*)param;
+    g_pView->setCurrentElementById(id);
+    return true;
+}
+
+bool OnSetElementValue(void* param)
+{
+    char* value = (char*)param;
+    g_pView->setCurrentElementValue(value);
+    return true;
+}
+
+bool OnCheck(void* param)
+{
+    return true;
 }

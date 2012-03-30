@@ -263,6 +263,21 @@ void WebView::stop()
 {
     frame()->loader()->stopAllLoaders();
 }
+
+int WebView::setCurrentElementById(char* id)
+{
+    AtomicString strID(id);
+    m_curElement = frame()->document()->getElementById(strID);
+    return 0;
+}
+
+int WebView::setCurrentElementValue(char* value)
+{
+    ExceptionCode e;
+    m_curElement->setAttribute(AtomicString("value"),AtomicString(value),&e);
+    return 0;
+}
+
 /*
 void WebView::paint(HDC hDC, const IntRect& clipRect)
 {

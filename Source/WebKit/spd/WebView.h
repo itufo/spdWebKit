@@ -49,7 +49,8 @@ public:
     WTF::String m_url;
     void reload();
     void stop();
-
+    int setCurrentElementById(char* id);
+    int setCurrentElementValue(char* value);
     //void frameRect(RECT* rect) const;
 
     PassRefPtr<WebCore::Frame> createFrame(const WebCore::KURL&, const WTF::String&, WebCore::HTMLFrameOwnerElement*, const WTF::String&, bool, int, int);
@@ -79,6 +80,7 @@ private:
     bool m_enableDoubleBuffer;
     //OwnPtr<HDC> m_doubleBufferDC;
     //OwnPtr<HBITMAP> m_doubleBufferBitmap;
+    Element* m_curElement;
 };
 
 #endif // WebView_h
