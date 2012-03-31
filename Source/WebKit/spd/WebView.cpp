@@ -280,7 +280,7 @@ int WebView::setCurrentElementValue(char* value)
     return 0;
 }
 
-int WebView::chick()
+int WebView::click()
 {
     //m_curElement->onclick();
     PlatformMouseEvent event;
