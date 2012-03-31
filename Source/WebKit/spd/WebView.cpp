@@ -285,7 +285,8 @@ int WebView::click()
     //m_curElement->onclick();
     PlatformMouseEvent event;
     AtomicString type("click");
-    m_curElement->dispatchMouseEvent(event,type,1,NULL);
+    //m_curElement->dispatchMouseEvent(event,type,1,NULL);
+    frame()->eventHandler()->dispatchMouseEvent(type,m_curElement,1);
     return 0;
 }
 
