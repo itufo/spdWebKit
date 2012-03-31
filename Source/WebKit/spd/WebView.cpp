@@ -21,7 +21,7 @@
 #include "Page.h"
 #include "markup.h"
 //#include "PlatformKeyboardEvent.h"
-//#include "PlatformMouseEvent.h"
+#include "PlatformMouseEvent.h"
 //#include "PlatformStrategiesSpd.h"
 //#include "PlatformWheelEvent.h"
 #include "ResourceRequest.h"
@@ -282,7 +282,10 @@ int WebView::setCurrentElementValue(char* value)
 
 int WebView::chick()
 {
-    m_curElement->onclick();
+    //m_curElement->onclick();
+    PlatformMouseEvent event;
+    AtomicString type("click");
+    m_curElement->dispatchMouseEvent(event,type,1,NULL);
     return 0;
 }
 
