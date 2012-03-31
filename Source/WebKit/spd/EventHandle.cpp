@@ -267,5 +267,6 @@ bool OnSetElementValue(void* param)
 
 bool OnClick(void* param)
 {
+    g_pView->click();
     return true;
 }
