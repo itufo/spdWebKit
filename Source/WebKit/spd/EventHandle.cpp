@@ -28,6 +28,7 @@ int EventHandle::ET_QUIT = SEvent_type_new();
 int EventHandle::ET_GETELEMENT = SEvent_type_new();
 int EventHandle::ET_SETVALUE = SEvent_type_new();
 int EventHandle::ET_CLICK = SEvent_type_new();
+int EventHandle::ET_TYPE = SEvent_type_new();
 
 bool OnStart(void* param);
 bool OnAlive(void* param);
@@ -37,6 +38,7 @@ bool OnQuit(void* param);
 bool OnGetElementById(void* param);
 bool OnSetElementValue(void* param);
 bool OnClick(void* param);
+bool OnType(void* param);
 
 SPD_GLOBAL int EventHandle::init()
 {
@@ -61,7 +63,7 @@ SPD_GLOBAL EventHandle::EventHandle()
     SEvent_handler_add(ET_GETELEMENT, OnGetElementById);
     SEvent_handler_add(ET_SETVALUE,OnSetElementValue);
     SEvent_handler_add(ET_CLICK,OnClick);
-
+    SEvent_handler_add(ET_TYPE,OnType);
 }
 
 SPD_GLOBAL int EventHandle::start()
@@ -123,13 +125,22 @@ SPD_GLOBAL int EventHandle::click()
     return 0;
 }
 
+SPD_GLOBAL int EventHandle::type(char* text)
+{
+    char* buf = (char*)malloc(strlen(text)+1);
+    memset(buf,0,strlen(text)+1);
+    strncpy(buf,text,strlen(text));
+    SEvent_add(EventHandle::ET_TYPE, buf);
+    return 0;
+}
+
 void *cmd(void *arg)
 {
    EventHandle* pHandle = (EventHandle*)arg;
    while(1)
    {
        char cmd[512] = {0};
-       printf("start/load/get/set/click/dump/quit?\n");
+       printf("start/load/get/set/click/type/dump/quit?\n");
        gets(cmd);
        if(strcmp(cmd,"start")==0)
        {
@@ -159,6 +170,13 @@ void *cmd(void *arg)
        else if(strcmp(cmd,"click")==0)
        {
            pHandle->click();
+       }
+       else if(strcmp(cmd,"type")==0)
+       {
+           printf("text:");
+           memset(cmd,0,512);
+           gets(cmd);
+           pHandle->type(cmd);
        }
        else if(strcmp(cmd,"dump")==0)
        {
@@ -268,5 +286,12 @@ bool OnSetElementValue(void* param)
 bool OnClick(void* param)
 {
     g_pView->click();
+    return true;
+}
+
+bool OnType(void* param)
+{
+    char* text = (char*)param;
+    g_pView->type(text);
     return true;
 }

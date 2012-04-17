@@ -290,6 +290,13 @@ int WebView::click()
     return 0;
 }
 
+int WebView::type(char* text)
+{
+    String tx(text);
+    frame()->eventHandler()->handleTextInputEvent(tx);
+    return 0;
+}
+
 /*
 void WebView::paint(HDC hDC, const IntRect& clipRect)
 {

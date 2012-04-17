@@ -56,6 +56,7 @@ public:
     int setCurrentElementById(char* id);
     int setCurrentElementValue(char* value);
     int click();
+    int type(char* text);
     //void frameRect(RECT* rect) const;
 
     PassRefPtr<WebCore::Frame> createFrame(const WebCore::KURL&, const WTF::String&, WebCore::HTMLFrameOwnerElement*, const WTF::String&, bool, int, int);

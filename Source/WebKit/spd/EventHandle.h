@@ -32,6 +32,8 @@ public:
 
     int click();
 
+    int type(char* text);
+
     void event_loop(client_cb func);
 
 
@@ -44,6 +46,7 @@ public:
     static int ET_GETELEMENT;
     static int ET_SETVALUE;
     static int ET_CLICK;
+    static int ET_TYPE;
 
 private:
     char m_url[512];
