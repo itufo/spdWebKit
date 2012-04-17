@@ -292,6 +292,7 @@ int WebView::click()
 
 int WebView::type(char* text)
 {
+    m_curElement->setFocus(true);
     String tx(text);
     frame()->eventHandler()->handleTextInputEvent(tx);
     return 0;
