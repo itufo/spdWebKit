@@ -294,7 +294,8 @@ int WebView::type(char* text)
 {
     m_curElement->setFocus(true);
     String tx(text);
-    PassRefPtr<Event> event = Event::create();
+    AtomicString type("keypress");
+    PassRefPtr<Event> event = Event::create(type,true,true);
     frame()->eventHandler()->handleTextInputEvent(tx,event.get());
     return 0;
 }
