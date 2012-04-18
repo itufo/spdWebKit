@@ -292,12 +292,28 @@ int WebView::click()
 
 int WebView::type(char* text)
 {
+/*
     m_curElement->setFocus(true);
     String tx(text);
     AtomicString type("keypress");
     PassRefPtr<Event> event = Event::create(type,true,true);
     frame()->eventHandler()->handleTextInputEvent(tx,event.get());
-    return 0;
+*/
+
+    Frame* frame = m_page->focusController()->focusedOrMainFrame();
+
+    String type("keypress");
+    String tx(text);
+    String tmp;
+    PlatformKeyboardEvent keyEvent(PlatformEvent::Char, tx, tmp, tmp, 0, 0, 0,
+            false, false, false, PlatformEvent::MetaKey, 0.0);
+    //// IE does not dispatch keypress event for WM_SYSCHAR.
+    //if (systemKeyDown)
+    //    return frame->eventHandler()->handleAccessKey(keyEvent);
+    if (frame->eventHandler()->keyEvent(keyEvent))
+        return 0;
+
+    return -1;
 }
 
 /*
