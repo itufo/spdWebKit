@@ -37,7 +37,8 @@ String FrameLoaderClientSpd::userAgent(const KURL&)
 
     if (userAgentString.isNull()) {
         String webKitVersion = String::format("%d.%d", WEBKIT_MAJOR_VERSION, WEBKIT_MINOR_VERSION);
-        userAgentString = makeString("Mozilla/5.0 (", "X11; Linux i686; rv:5.0.1", ") AppleWebKit/", webKitVersion, " (KHTML, like Gecko) Mobile Safari/", webKitVersion);
+        //userAgentString = makeString("Mozilla/5.0 (", "X11; Linux i686; rv:5.0.1", ") AppleWebKit/", webKitVersion, " (KHTML, like Gecko) Mobile Safari/", webKitVersion);
+        userAgentString = makeString("Mozilla/5.0 (X11; Linux i686; rv:11.0) Gecko/20100101 Firefox/11.0");
     }
 
     return userAgentString;
