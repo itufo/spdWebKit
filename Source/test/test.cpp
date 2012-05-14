@@ -22,6 +22,7 @@ int main(int argc, char* argv[])
 {
         EventHandle::init();
         EventHandle* pHandle = new EventHandle();
-        pHandle->event_loop(client_work);
+        //pHandle->event_loop(client_work);
+        pHandle->event_loop(NULL);
         return 0;
 }
