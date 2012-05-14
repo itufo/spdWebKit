@@ -74,7 +74,7 @@ LIST(APPEND WebKit_SOURCES
     spd/WebCoreSupport/ChromeClientSpd.cpp
     #spd/WebCoreSupport/ContextMenuClientSpd.cpp
     #spd/WebCoreSupport/DragClientSpd.cpp
-    #spd/WebCoreSupport/EditorClientSpd.cpp
+    spd/WebCoreSupport/EditorClientSpd.cpp
     spd/WebCoreSupport/FrameLoaderClientSpd.cpp
     spd/WebCoreSupport/FrameNetworkingContextSpd.cpp
     spd/WebCoreSupport/InspectorClientSpd.cpp
