@@ -20,7 +20,7 @@
 #include "NotImplemented.h"
 #include "Page.h"
 #include "markup.h"
-//#include "PlatformKeyboardEvent.h"
+#include "PlatformKeyboardEvent.h"
 #include "PlatformMouseEvent.h"
 //#include "PlatformStrategiesSpd.h"
 //#include "PlatformWheelEvent.h"
@@ -28,6 +28,7 @@
 #include "Settings.h"
 #include "SharedBuffer.h"
 //#include "WebCoreInstanceHandle.h"
+#include "BeforeTextInsertedEvent.h"
 
 using namespace WebCore;
 
@@ -57,7 +58,7 @@ WebView::WebView()
     Page::PageClients pageClients;
     pageClients.chromeClient = new WebKit::ChromeClientSpd(this);
     //pageClients.contextMenuClient = new WebKit::ContextMenuClientSpd(this);
-    //pageClients.editorClient = new WebKit::EditorClientSpd(this);
+    pageClients.editorClient = new WebKit::EditorClientSpd(this);
     //pageClients.dragClient = new WebKit::DragClientSpd();
     pageClients.inspectorClient = new WebKit::InspectorClientSpd(this);
     m_page = new Page(pageClients);
@@ -266,6 +267,12 @@ void WebView::stop()
 
 int WebView::setCurrentElementById(char* id)
 {
+    String selector(id);
+    ExceptionCode e;
+    m_curElement = frame()->document()->querySelector(selector,e).get();
+    //printf("querySelector(%s) return %d\n",id,(int)m_curElement);
+    return 0;
+
     AtomicString strID(id);
     m_curElement = frame()->document()->getElementById(strID);
     return 0;
@@ -277,6 +284,7 @@ int WebView::setCurrentElementValue(char* value)
     AtomicString AttrName("value");
     AtomicString AtrrValue(value);
     m_curElement->setAttribute(AttrName,AtrrValue,e);
+
     return 0;
 }
 
@@ -292,6 +300,11 @@ int WebView::click()
 
 int WebView::type(char* text)
 {
+    ExceptionCode e;
+    AtomicString name("value");
+    AtomicString value(text);
+    m_curElement->setAttribute(name,value,e);
+    return 0;
 /*
     m_curElement->setFocus(true);
     String tx(text);
@@ -300,20 +313,28 @@ int WebView::type(char* text)
     frame()->eventHandler()->handleTextInputEvent(tx,event.get());
 */
 
-    Frame* frame = m_page->focusController()->focusedOrMainFrame();
-
-    String type("keypress");
-    String tx(text);
-    String tmp;
-    PlatformKeyboardEvent keyEvent(PlatformEvent::Char, tx, tmp, tmp, 0, 0, 0,
-            false, false, false, PlatformEvent::MetaKey, 0.0);
+    //m_curElement->setFocus(true);
+    //Frame* frame = m_page->focusController()->focusedOrMainFrame();
+    
+    PassRefPtr<Node> node(m_curElement);
+    m_curElement->document()->setFocusedNode(node);
+    Frame* frame = m_curElement->document()->frame();
+    //m_curElement->setFocus(true);
+    //    m_curElement->document()->frame();
+    //        Frame* frame = m_page->focusController()->focusedOrMainFrame();
+    //
+    PlatformKeyboardEvent keyEvent(text[0]);
     //// IE does not dispatch keypress event for WM_SYSCHAR.
     //if (systemKeyDown)
     //    return frame->eventHandler()->handleAccessKey(keyEvent);
-    if (frame->eventHandler()->keyEvent(keyEvent))
-        return 0;
-
-    return -1;
+    frame->eventHandler()->keyEvent(keyEvent);
+    String eText = text;
+    String newText = eText;
+    ExceptionCode ec = 0;
+    RefPtr<BeforeTextInsertedEvent> evt = BeforeTextInsertedEvent::create(eText);
+    m_curElement->dispatchEvent(evt, ec);
+    newText = evt->text();
+    return 0;
 }
 
 /*
