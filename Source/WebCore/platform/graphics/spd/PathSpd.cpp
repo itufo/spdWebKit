@@ -18,7 +18,7 @@ Path::Path()
 
 Path::~Path()
 {
-    delete m_path;
+    //delete m_path;
 }
 
 Path::Path(const Path& other)
