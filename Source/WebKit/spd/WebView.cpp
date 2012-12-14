@@ -29,6 +29,7 @@
 #include "SharedBuffer.h"
 //#include "WebCoreInstanceHandle.h"
 #include "BeforeTextInsertedEvent.h"
+#include "ResourceHandleManager.h"
 
 using namespace WebCore;
 
@@ -77,6 +78,9 @@ WebView::WebView()
     loaderClient->setFrame(m_frame);
 
     m_page->mainFrame()->init();
+
+	ResourceHandleManager* resHdlMgr = ResourceHandleManager::sharedInstance();
+    resHdlMgr->setCookieJarFileName("/ape/cookie/spdWebKit.cookies");
 }
 
 /*
@@ -312,7 +316,7 @@ int WebView::type(char* text)
     PassRefPtr<Event> event = Event::create(type,true,true);
     frame()->eventHandler()->handleTextInputEvent(tx,event.get());
 */
-
+/*
     //m_curElement->setFocus(true);
     //Frame* frame = m_page->focusController()->focusedOrMainFrame();
     
@@ -334,6 +338,7 @@ int WebView::type(char* text)
     RefPtr<BeforeTextInsertedEvent> evt = BeforeTextInsertedEvent::create(eText);
     m_curElement->dispatchEvent(evt, ec);
     newText = evt->text();
+*/
     return 0;
 }
 
