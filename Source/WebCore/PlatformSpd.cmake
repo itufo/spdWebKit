@@ -78,7 +78,6 @@ LIST(APPEND WebCore_SOURCES
   platform/network/curl/ResourceHandleCurl.cpp
   platform/network/curl/ResourceHandleManager.cpp
   platform/network/curl/SocketStreamHandleCurl.cpp
-  platform/network/spd/CookiesSpd.cpp
   platform/posix/FileSystemPOSIX.cpp
   platform/text/spd/TextBreakIteratorInternalICUSpd.cpp
 )
