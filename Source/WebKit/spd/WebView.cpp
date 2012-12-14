@@ -79,8 +79,8 @@ WebView::WebView()
 
     m_page->mainFrame()->init();
 
-	ResourceHandleManager* resHdlMgr = ResourceHandleManager::sharedInstance();
-    resHdlMgr->setCookieJarFileName("/ape/cookie/spdWebKit.cookies");
+	//ResourceHandleManager* resHdlMgr = ResourceHandleManager::sharedInstance();
+    //resHdlMgr->setCookieJarFileName("/ape/cookie/spdWebKit.cookies");
 }
 
 /*
