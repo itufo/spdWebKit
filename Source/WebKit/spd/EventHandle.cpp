@@ -4,7 +4,11 @@
 #include "WebView.h"
 #include "wtf/text/WTFString.h"
 #include "wtf/text/CString.h"
+#include "ResourceHandleManager.h"
 #include "SEvent.h"
+#include "Frame.h"
+#include "JSValue.h"
+#include "ScriptValue.h"
 
 #include <pthread.h>
 #include <stdio.h>
@@ -16,6 +20,10 @@ namespace WTF{
    class String;
    class CString;
 }
+
+namespace JSC{
+	class JSValue;
+};
 
 using namespace WebCore;
 
@@ -29,6 +37,8 @@ int EventHandle::ET_GETELEMENT = SEvent_type_new();
 int EventHandle::ET_SETVALUE = SEvent_type_new();
 int EventHandle::ET_CLICK = SEvent_type_new();
 int EventHandle::ET_TYPE = SEvent_type_new();
+int EventHandle::ET_SCRIPT = SEvent_type_new();
+int EventHandle::ET_COOKIE = SEvent_type_new();
 
 bool OnStart(void* param);
 bool OnAlive(void* param);
@@ -39,6 +49,8 @@ bool OnGetElementById(void* param);
 bool OnSetElementValue(void* param);
 bool OnClick(void* param);
 bool OnType(void* param);
+bool OnScript(void* param);
+bool OnCookie(void* param);
 
 SPD_GLOBAL int EventHandle::init()
 {
@@ -64,6 +76,8 @@ SPD_GLOBAL EventHandle::EventHandle()
     SEvent_handler_add(ET_SETVALUE,OnSetElementValue);
     SEvent_handler_add(ET_CLICK,OnClick);
     SEvent_handler_add(ET_TYPE,OnType);
+    SEvent_handler_add(ET_SCRIPT,OnScript);
+    SEvent_handler_add(ET_COOKIE,OnCookie);
 }
 
 SPD_GLOBAL int EventHandle::start()
@@ -131,6 +145,24 @@ SPD_GLOBAL int EventHandle::type(char* text)
     memset(buf,0,strlen(text)+1);
     strncpy(buf,text,strlen(text));
     SEvent_add(EventHandle::ET_TYPE, buf);
+    return 0;
+}
+
+SPD_GLOBAL int EventHandle::script(char* javascript)
+{
+    char* buf = (char*)malloc(strlen(javascript)+1);
+    memset(buf,0,strlen(javascript)+1);
+    strncpy(buf,javascript,strlen(javascript));
+    SEvent_add(EventHandle::ET_SCRIPT, buf);
+    return 0;
+}
+
+SPD_GLOBAL int EventHandle::cookie(const char* cookie)
+{
+    char* buf = (char*)malloc(strlen(cookie)+1);
+    memset(buf,0,strlen(cookie)+1);
+    strncpy(buf,cookie,strlen(cookie));
+    SEvent_add(EventHandle::ET_COOKIE, buf);
     return 0;
 }
 
@@ -258,6 +290,7 @@ bool OnDumpHTML(void* param)
     memset(*buf,0,len+1);
     strncpy(*buf,html.data(),len);
     //printf("%s\n\n\n\n",g_pView->innerText().utf8(false).data());
+
     return true;
 }
 
@@ -293,5 +326,24 @@ bool OnType(void* param)
 {
     char* text = (char*)param;
     g_pView->type(text);
+    return true;
+}
+
+bool OnScript(void* param)
+{
+    char* script = (char*)param;
+
+    WebCore::ScriptController* controller = g_pView->frame()->script();
+    controller->executeScript(script, true);
+
+    return true;
+}
+
+bool OnCookie(void* param)
+{
+    char* cookiefile = (char*)param;
+
+    ResourceHandleManager* resHdlMgr = ResourceHandleManager::sharedInstance();
+    resHdlMgr->setCookieJarFileName(cookiefile);
     return true;
 }

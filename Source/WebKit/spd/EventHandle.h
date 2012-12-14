@@ -34,8 +34,11 @@ public:
 
     int type(char* text);
 
-    void event_loop(client_cb func);
+    int script(char* javascript);
 
+    int cookie(const char* cookiefile);
+
+    void event_loop(client_cb func);
 
 public:
     static int ET_ALIVE;
@@ -47,6 +50,8 @@ public:
     static int ET_SETVALUE;
     static int ET_CLICK;
     static int ET_TYPE;
+    static int ET_SCRIPT;
+    static int ET_COOKIE;
 
 private:
     char m_url[512];
