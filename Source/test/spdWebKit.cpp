@@ -27,15 +27,15 @@ bool readjs()
 	ifFile.seekg(0, ios::end); 
 	int iFileSize = ifFile.tellg();
 	ifFile.seekg( 0, ios::beg );
-	char *pBuffer = new char[iFileSize];
+	char *pBuffer = new char[iFileSize+1];
 	if ( pBuffer == NULL )
 	{
        cout<<2<<endl;
-		return -1;
+       return -1;
 	}
-       cout<<iFileSize<<endl;
-	memset(pBuffer, 0, iFileSize );
-	ifFile.read( pBuffer, iFileSize );
+    cout<<iFileSize<<endl;
+	memset(pBuffer, 0, iFileSize+1);
+	ifFile.read( pBuffer, iFileSize);
     script = pBuffer;
     free(pBuffer);
 	return true;
@@ -51,7 +51,7 @@ void* client_work(void* param)
     	pHandle->cookie(cookie.c_str());
 
     pHandle->load((char*)url.c_str());
-    sleep(5);
+    sleep(10);
     cout<<script<<endl;
     pHandle->script((char*)script.c_str());
     sleep(5);
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 {
     if(argc<2)
     {
-        printf(" Usage: spdlogin -c [cookie] -s [login.js] -o [save_to_file] -u [url] \n");
+        printf(" Usage: spdWebKit -c [cookie] -s [extend.js] -o [save_to_file] -u [url] \n");
         return -1;
     }
 
