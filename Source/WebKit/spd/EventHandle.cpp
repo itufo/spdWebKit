@@ -118,7 +118,7 @@ SPD_GLOBAL char* EventHandle::dumpHTML()
     double t = 0;
     while (!dumped)
     {
-        if (t > 30)
+        if (t > 3)
         {
             m_buf = "timeout";
             break;
@@ -322,10 +322,15 @@ bool OnDumpHTML(void* param)
     char** buf = (char**)param;
 
     CString html = g_pView->innerText().utf8(false);
-    int len = html.length();
+
+    int len = html.length()+100;
     *buf = (char*) malloc(len + 1);
     memset(*buf, 0, len + 1);
-    strncpy(*buf, html.data(), len);
+
+    char* charset = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
+    strcpy(*buf,charset);
+
+    strncpy(*buf+strlen(*buf), html.data(), len);
 
     dumped = true;
 
