@@ -319,6 +319,8 @@ bool OnDumpHTML(void* param)
 {
     printf("tid:%u OnDumpLoad()\n", (unsigned int) pthread_self());
 
+    char** buf = (char**)param;
+
     CString html = g_pView->innerText().utf8(false);
     int len = html.length();
     *buf = (char*) malloc(len + 1);
