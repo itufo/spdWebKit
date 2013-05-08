@@ -116,7 +116,12 @@ void* spdWebKitd_load(void* param)
     sleep(1);
 
     pHandle->load(p_url);
-    sleep(10);
+    for(int i=0;i<10;i++)
+    {
+        pHandle->status();
+        sleep(1);
+    }
+    //sleep(10);
 
     char* html = pHandle->dumpHTML();
 
