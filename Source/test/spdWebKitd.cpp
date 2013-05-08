@@ -122,7 +122,24 @@ void* spdWebKitd_load(void* param)
     //    sleep(1);
     //}
     //sleep(10);
-
+    int n = 0;
+    double t = 0;
+    while(n<5)
+    {
+        if(pHandle->status())
+        {
+            n++;
+        }
+        else{
+            n = 0;
+        }
+        if(t>30)
+        {
+            break;
+        }
+        usleep(500*1000);
+        t += 0.5;
+    }
     char* html = pHandle->dumpHTML();
 
     p_http->sendResponse(html);
