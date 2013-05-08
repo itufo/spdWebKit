@@ -39,6 +39,7 @@ int EventHandle::ET_CLICK = SEvent_type_new();
 int EventHandle::ET_TYPE = SEvent_type_new();
 int EventHandle::ET_SCRIPT = SEvent_type_new();
 int EventHandle::ET_COOKIE = SEvent_type_new();
+int EventHandle::ET_STATUS = SEvent_type_new();
 
 bool OnStart(void* param);
 bool OnAlive(void* param);
@@ -51,6 +52,7 @@ bool OnClick(void* param);
 bool OnType(void* param);
 bool OnScript(void* param);
 bool OnCookie(void* param);
+bool OnStatus(void* param);
 
 SPD_GLOBAL int EventHandle::init()
 {
@@ -78,6 +80,7 @@ SPD_GLOBAL EventHandle::EventHandle()
     SEvent_handler_add(ET_TYPE,OnType);
     SEvent_handler_add(ET_SCRIPT,OnScript);
     SEvent_handler_add(ET_COOKIE,OnCookie);
+    SEvent_handler_add(ET_STATUS,OnStatus);
 }
 
 SPD_GLOBAL int EventHandle::start()
@@ -163,6 +166,12 @@ SPD_GLOBAL int EventHandle::cookie(const char* cookie)
     memset(buf,0,strlen(cookie)+1);
     strncpy(buf,cookie,strlen(cookie));
     SEvent_add(EventHandle::ET_COOKIE, buf);
+    return 0;
+}
+
+SPD_GLOBAL int EventHandle::quit()
+{
+    SEvent_add(EventHandle::ET_STATUS, NULL);
     return 0;
 }
 
@@ -345,5 +354,11 @@ bool OnCookie(void* param)
 
     ResourceHandleManager* resHdlMgr = ResourceHandleManager::sharedInstance();
     resHdlMgr->setCookieJarFileName(cookiefile);
+    return true;
+}
+
+bool OnStatus(void* param)
+{
+    cout<<g_pView->m_frame->document()->readyState()<<endl;
     return true;
 }

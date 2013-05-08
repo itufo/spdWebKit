@@ -52,6 +52,7 @@ public:
     static int ET_TYPE;
     static int ET_SCRIPT;
     static int ET_COOKIE;
+    static int ET_STATUS;
 
 private:
     char m_url[512];
