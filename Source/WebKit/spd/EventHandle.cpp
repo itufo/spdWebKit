@@ -320,14 +320,14 @@ bool OnDumpHTML(void* param)
         else{
             n = 0;
         }
-        if(t>=30)
+        if(t>=25)
         {
             timeout = true;
             printf("timeout!");
             break;
         }
-        usleep(200*1000);
-        t += 0.2;
+        usleep(500*1000);
+        t += 0.5;
     }
 
     char** buf = (char**)param;
