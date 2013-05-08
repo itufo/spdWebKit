@@ -359,6 +359,6 @@ bool OnCookie(void* param)
 
 bool OnStatus(void* param)
 {
-    cout<<g_pView->m_frame->document()->readyState()<<endl;
+    printf("%s\n",g_pView->m_frame->document()->readyState().c_str());
     return true;
 }
