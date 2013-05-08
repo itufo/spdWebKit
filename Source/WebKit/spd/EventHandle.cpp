@@ -402,7 +402,7 @@ bool OnStatus(void* param)
         *(int*)param = 0;
     }
     stated = true;
-/*
+
     char* frameState = NULL;
     switch (g_pView->frame()->loader()->state())
     {
@@ -422,6 +422,5 @@ bool OnStatus(void* param)
     printf("%s %s\n", frameState,
             g_pView->frame()->document()->readyState().utf8(false).data());
 
-*/
     return true;
 }
