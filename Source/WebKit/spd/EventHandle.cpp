@@ -327,7 +327,7 @@ bool OnDumpHTML(void* param)
     *buf = (char*) malloc(len + 1);
     memset(*buf, 0, len + 1);
 
-    char* charset = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
+    char* charset = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n";
     strcpy(*buf,charset);
 
     strncpy(*buf+strlen(*buf), html.data(), len);
