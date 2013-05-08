@@ -292,14 +292,45 @@ bool OnLoad(void* param)
 bool OnDumpHTML(void* param)
 {
     printf("tid:%u OnDumpLoad()\n",(unsigned int)pthread_self());
-    char** buf = (char**)param;
-    CString html = g_pView->innerText().utf8(false);
-    int len = html.length();
-    *buf = (char*)malloc(len+1);
-    memset(*buf,0,len+1);
-    strncpy(*buf,html.data(),len);
-    //printf("%s\n\n\n\n",g_pView->innerText().utf8(false).data());
+    int timeout = false;
+    int n = 0;
+    double t = 0;
+    while(n<5)
+    {
+        if(g_pView->frame()->loader()->state() == FrameStateComplete
+                && strcmp("complete",g_pView->frame()->document()->readyState().utf8(false).data()) == 0)
+        {
+            printf("complete %d\n",n);
+            n++;
+        }
+        else{
+            n = 0;
+        }
+        if(t>=30)
+        {
+            timeout = true;
+            printf("timeout!");
+            break;
+        }
+        usleep(200*1000);
+        t += 0.2;
+    }
 
+    char** buf = (char**)param;
+    if(!timeout)
+    {
+        CString html = g_pView->innerText().utf8(false);
+        int len = html.length();
+        *buf = (char*)malloc(len+1);
+        memset(*buf,0,len+1);
+        strncpy(*buf,html.data(),len);
+    }
+    else{
+        *buf = (char*)malloc(64);
+        memset(*buf,0,64);
+        strcpy(*buf,"timeout");
+    }
+    //printf("%s\n\n\n\n",g_pView->innerText().utf8(false).data());
     return true;
 }
 
@@ -377,5 +408,6 @@ bool OnStatus(void* param)
     }
     printf("%s %s\n",frameState,
             g_pView->frame()->document()->readyState().utf8(false).data());
+
     return true;
 }
