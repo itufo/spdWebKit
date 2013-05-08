@@ -359,6 +359,23 @@ bool OnCookie(void* param)
 
 bool OnStatus(void* param)
 {
-    printf("%s\n",g_pView->frame()->document()->readyState().utf8(false).data());
+    char* frameState = NULL;
+    switch(g_pView->frame()->loader()->state())
+    {
+    case FrameStateProvisional:
+        frameState = "FrameStateProvisional";
+        break;
+    case FrameStateCommittedPage:
+        frameState = "FrameStateCommittedPage";
+        break;
+    case FrameStateComplete:
+        frameState = "FrameStateComplete";
+        break;
+    default:
+        frameState = "unknown";
+        break;
+    }
+    printf("%s %s\n",frameState,
+            g_pView->frame()->document()->readyState().utf8(false).data());
     return true;
 }
