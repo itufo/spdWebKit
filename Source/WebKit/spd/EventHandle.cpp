@@ -310,6 +310,7 @@ bool OnDumpHTML(void* param)
     double t = 0;
     while(n<5)
     {
+        OnStatus(NULL);
         if(g_pView->frame()->loader()->state() == FrameStateComplete
                 && strcmp("complete",g_pView->frame()->document()->readyState().utf8(false).data()) == 0)
         {
@@ -330,19 +331,11 @@ bool OnDumpHTML(void* param)
     }
 
     char** buf = (char**)param;
-    if(!timeout)
-    {
-        CString html = g_pView->innerText().utf8(false);
-        int len = html.length();
-        *buf = (char*)malloc(len+1);
-        memset(*buf,0,len+1);
-        strncpy(*buf,html.data(),len);
-    }
-    else{
-        *buf = (char*)malloc(64);
-        memset(*buf,0,64);
-        strcpy(*buf,"timeout");
-    }
+    CString html = g_pView->innerText().utf8(false);
+    int len = html.length();
+    *buf = (char*)malloc(len+1);
+    memset(*buf,0,len+1);
+    strncpy(*buf,html.data(),len);
     //printf("%s\n\n\n\n",g_pView->innerText().utf8(false).data());
 
     dumped = true;
