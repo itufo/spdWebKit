@@ -169,7 +169,7 @@ SPD_GLOBAL int EventHandle::cookie(const char* cookie)
     return 0;
 }
 
-SPD_GLOBAL int EventHandle::quit()
+SPD_GLOBAL int EventHandle::status()
 {
     SEvent_add(EventHandle::ET_STATUS, NULL);
     return 0;

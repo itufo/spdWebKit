@@ -38,6 +38,8 @@ public:
 
     int cookie(const char* cookiefile);
 
+    int status();
+
     void event_loop(client_cb func);
 
 public:
