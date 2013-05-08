@@ -27,6 +27,8 @@ namespace JSC{
 
 using namespace WebCore;
 
+bool dumped;
+
 extern WebView* g_pView;
 int EventHandle::ET_START = SEvent_type_new();
 int EventHandle::ET_ALIVE = SEvent_type_new();
@@ -107,8 +109,19 @@ SPD_GLOBAL char* EventHandle::dumpHTML()
         free(m_buf);
         m_buf = NULL;
     }
+    dumped = false;
     SEvent_add(ET_DUMPHTML, &m_buf);
-    sleep(1);
+    double t = 0;
+    while(!dumped)
+    {
+        if(t>30)
+        {
+            m_buf = "timeout";
+            break;
+        }
+        usleep(200*1000);
+        t += 0.2;
+    }
     return m_buf;
 }
 
@@ -331,6 +344,9 @@ bool OnDumpHTML(void* param)
         strcpy(*buf,"timeout");
     }
     //printf("%s\n\n\n\n",g_pView->innerText().utf8(false).data());
+
+    dumped = true;
+
     return true;
 }
 
