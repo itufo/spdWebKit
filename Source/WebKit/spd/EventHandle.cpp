@@ -326,8 +326,8 @@ bool OnDumpHTML(void* param)
             printf("timeout!");
             break;
         }
-        usleep(500*1000);
-        t += 0.5;
+        usleep(1000*1000);
+        t += 1;
     }
 
     char** buf = (char**)param;
