@@ -323,9 +323,9 @@ bool OnDumpHTML(void* param)
 
     CString html = g_pView->innerText().utf8(false);
 
-    int len = html.length()+100;
-    *buf = (char*) malloc(len + 1);
-    memset(*buf, 0, len + 1);
+    int len = html.length();
+    *buf = (char*) malloc(len + 100 + 1);
+    memset(*buf, 0, len + 100 + 1);
 
     char* charset = "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n";
     strcpy(*buf,charset);
