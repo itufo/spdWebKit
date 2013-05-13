@@ -108,13 +108,21 @@ void* spdWebKitd_load(void* param)
 
     cout << "QueryString:" << p_QueryString << endl;
     spdCgiAux* p_CgiAux = spdCgiAux_new(p_QueryString);
+
     char* p_url = NULL;
     spdCgiAux_query_value(p_CgiAux, "url", &p_url);
+
+    char* p_cookie = NULL;
+    spdCgiAux_query_value(p_CgiAux, "cookie", &p_cookie);
 
     EventHandle* pHandle = (EventHandle*) param;
     pHandle->start();
     sleep(1);
 
+    if(p_cookie != NULL)
+    {
+        pHandle->cookie(p_cookie);
+    }
     pHandle->load(p_url);
     //for(int i=0;i<10;i++)
     //{
