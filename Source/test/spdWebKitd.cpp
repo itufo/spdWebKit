@@ -21,6 +21,11 @@ int spdLock_test()
         sprintf(tmp_file, "%s%03d", LOCK_PRE, i);
 
         int fd = open(tmp_file, O_CREAT | O_RDWR, 0777);
+        if(fd < 0)
+        {
+            printf("error: open %s fail\n",tmp_file);
+            return -1;
+        }
         struct flock flock_to_test;
         flock_to_test.l_type = F_WRLCK;
         flock_to_test.l_whence = SEEK_SET;
@@ -29,14 +34,18 @@ int spdLock_test()
         flock_to_test.l_pid = -1;
         if (fcntl(fd, F_GETLK, &flock_to_test) < 0)
         {
+            close(fd);
             continue;
         }
         if (flock_to_test.l_type == F_UNLCK)
         {
+            close(fd);
             return 0;
         }
         printf("%s locked\n",tmp_file);
+        close(fd);
     }
+
     return -1;
 }
 
