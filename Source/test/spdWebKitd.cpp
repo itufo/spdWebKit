@@ -153,7 +153,7 @@ int spdWebKitd_server(int port)
         spdProcess::fork(spdWebKitd_local, NULL);
 
         g_lock_file[0] = '\0';
-
+        sleep(1);
         /*
          //释放连接
          printf("释放连接\n");
@@ -244,6 +244,7 @@ void* spdWebKitd_load(void* param)
 
 void* spdWebKitd_local(void*)
 {
+    spdLock_lock();
     if (p_http)
     {
         delete p_http;
