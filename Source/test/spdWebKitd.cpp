@@ -8,13 +8,40 @@ spdHttp* p_http = NULL;
 #define THREAD_NUM 3
 #define LOCK_PRE "/tmp/spdWebKitd_lock_"
 
-char g_lock_file[256] = {0};
+char g_lock_file[256] =
+{ 0 };
 
 void* spdWebKitd_local(void* p_connfd);
 
+int spdLock_test()
+{
+    char tmp_file[256] = { 0 };
+    for (int i = 0; i < THREAD_NUM; i++)
+    {
+        sprintf(tmp_file, "%s%03d", LOCK_PRE, i);
+
+        int fd = open(tmp_file, O_CREAT | O_RDWR, 0777);
+        struct flock flock_to_test;
+        flock_to_test.l_type = F_WRLCK;
+        flock_to_test.l_whence = SEEK_SET;
+        flock_to_test.l_start = 0;
+        flock_to_test.l_len = 0;
+        flock_to_test.l_pid = -1;
+        if (fcntl(fd, F_GETLK, &flock_to_test) < 0)
+        {
+            continue;
+        }
+        if (flock_to_test.l_type == F_UNLCK)
+        {
+            return 0;
+        }
+    }
+    return -1;
+}
+
 int spdLock_unlock()
 {
-    if(strncmp(g_lock_file,LOCK_PRE,strlen(LOCK_PRE)) != 0)
+    if (strncmp(g_lock_file, LOCK_PRE, strlen(LOCK_PRE)) != 0)
     {
         return 0;
     }
@@ -25,23 +52,25 @@ int spdLock_unlock()
 
 int spdLock_lock()
 {
-    char tmp_file[256] = {0};
-    for(int i=0;i<THREAD_NUM;i++)
+    char tmp_file[256] =
+    { 0 };
+    for (int i = 0; i < THREAD_NUM; i++)
     {
-        sprintf(tmp_file,"%s%03d",LOCK_PRE,i);
-        int fd = open(tmp_file,O_CREAT|O_RDWR,0777);
+        sprintf(tmp_file, "%s%03d", LOCK_PRE, i);
+        int fd = open(tmp_file, O_CREAT | O_RDWR, 0777);
         struct flock flock;
         flock.l_type = F_WRLCK;
         flock.l_whence = SEEK_SET;
         flock.l_start = 0;
         flock.l_len = 0;
-        if(-1 != fcntl(fd,F_SETLK,&flock))
+        if (-1 != fcntl(fd, F_SETLK, &flock))
         {
-            printf("lock %s\n",tmp_file);
-            strcmp(g_lock_file,tmp_file);
+            printf("lock %s\n", tmp_file);
+            strcmp(g_lock_file, tmp_file);
             return 0;
         }
     }
+    printf("");
     return -1;
 }
 
@@ -116,27 +145,27 @@ int spdWebKitd_server(int port)
         char *str = inet_ntoa(clientaddr.sin_addr);
         printf("accapt a connection from %s at port %d FD(%d)\n", str,
                 clientaddr.sin_port, connfd);
-        while(-1 == spdLock_lock())
+        while (-1 == spdLock_test())
         {
-            printf("进程数达到上限(%d)，等待中...\n",THREAD_NUM);
+            printf("进程数达到上限(%d)，等待中...\n", THREAD_NUM);
             sleep(1);
         }
         spdProcess::fork(spdWebKitd_local, NULL);
 
         g_lock_file[0] = '\0';
 
-/*
-        //释放连接
-        printf("释放连接\n");
-        if (-1 == shutdown(connfd, SHUT_RDWR))
-        {
-            int a = EBADF;
-            fprintf(stderr, "FAIL FD(%d),errno(%d) %s\n", sock_cli, errno,
-                    strerror(errno));
-        }
-        close(connfd);
-        connfd = -1;
-*/
+        /*
+         //释放连接
+         printf("释放连接\n");
+         if (-1 == shutdown(connfd, SHUT_RDWR))
+         {
+         int a = EBADF;
+         fprintf(stderr, "FAIL FD(%d),errno(%d) %s\n", sock_cli, errno,
+         strerror(errno));
+         }
+         close(connfd);
+         connfd = -1;
+         */
 
     } //end of for(;;)
     return 0;
@@ -163,7 +192,7 @@ void* spdWebKitd_load(void* param)
     pHandle->start();
     sleep(1);
 
-    if(p_cookie != NULL)
+    if (p_cookie != NULL)
     {
         pHandle->cookie(p_cookie);
     }
@@ -176,20 +205,21 @@ void* spdWebKitd_load(void* param)
     //sleep(10);
     int n = 0;
     double t = 0;
-    while(n<5)
+    while (n < 5)
     {
-        if(pHandle->status())
+        if (pHandle->status())
         {
             n++;
         }
-        else{
+        else
+        {
             n = 0;
         }
-        if(t>30)
+        if (t > 30)
         {
             break;
         }
-        usleep(500*1000);
+        usleep(500 * 1000);
         t += 0.5;
     }
     char* html = pHandle->dumpHTML();
@@ -207,7 +237,6 @@ void* spdWebKitd_load(void* param)
     connfd = -1;
 
     spdLock_unlock();
-
 
     exit(0);
     return NULL;
@@ -233,7 +262,8 @@ void* spdWebKitd_local(void*)
 
         pHandle->event_loop(spdWebKitd_load);
     }
-    else{
+    else
+    {
         //释放连接
         printf("释放连接\n");
         if (-1 == shutdown(connfd, SHUT_RDWR))
