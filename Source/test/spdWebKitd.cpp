@@ -35,6 +35,7 @@ int spdLock_test()
         {
             return 0;
         }
+        printf("%s locked\n",tmp_file);
     }
     return -1;
 }
