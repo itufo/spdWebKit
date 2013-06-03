@@ -70,7 +70,6 @@ int spdLock_lock()
             return 0;
         }
     }
-    printf("");
     return -1;
 }
 
@@ -236,7 +235,7 @@ void* spdWebKitd_load(void* param)
     close(connfd);
     connfd = -1;
 
-    spdLock_unlock();
+    //spdLock_unlock();
 
     exit(0);
     return NULL;
@@ -274,7 +273,7 @@ void* spdWebKitd_local(void*)
         }
         close(connfd);
         connfd = -1;
-        spdLock_unlock();
+        //spdLock_unlock();
     }
 
     return NULL;
