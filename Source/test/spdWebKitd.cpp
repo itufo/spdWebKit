@@ -5,7 +5,7 @@ using namespace std;
 
 int connfd = -1;
 spdHttp* p_http = NULL;
-#define THREAD_NUM 3
+#define THREAD_NUM 10
 #define LOCK_PRE "/tmp/spdWebKitd_lock_"
 
 char g_lock_file[256] =
@@ -16,7 +16,7 @@ void* spdWebKitd_local(void* p_connfd);
 int spdLock_test()
 {
     char tmp_file[256] = { 0 };
-    for (int i = 0; i < THREAD_NUM; i++)
+    for (int i = 0; i <= THREAD_NUM; i++)
     {
         sprintf(tmp_file, "%s%03d", LOCK_PRE, i);
 
@@ -54,7 +54,7 @@ int spdLock_lock()
 {
     char tmp_file[256] =
     { 0 };
-    for (int i = 0; i < THREAD_NUM; i++)
+    for (int i = 0; i <= THREAD_NUM; i++)
     {
         sprintf(tmp_file, "%s%03d", LOCK_PRE, i);
         int fd = open(tmp_file, O_CREAT | O_RDWR, 0777);
