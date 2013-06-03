@@ -195,6 +195,19 @@ void* spdWebKitd_load(void* param)
 
     p_http->sendResponse(html);
 
+    //释放连接
+    printf("释放连接\n");
+    if (-1 == shutdown(connfd, SHUT_RDWR))
+    {
+        int a = EBADF;
+        fprintf(stderr, "FAIL errno(%d) %s\n", errno, strerror(errno));
+    }
+    close(connfd);
+    connfd = -1;
+
+    spdLock_unlock();
+
+
     exit(0);
     return NULL;
 }
@@ -219,18 +232,18 @@ void* spdWebKitd_local(void*)
 
         pHandle->event_loop(spdWebKitd_load);
     }
-
-    //释放连接
-    printf("释放连接\n");
-    if (-1 == shutdown(connfd, SHUT_RDWR))
-    {
-        int a = EBADF;
-        fprintf(stderr, "FAIL errno(%d) %s\n", errno, strerror(errno));
+    else{
+        //释放连接
+        printf("释放连接\n");
+        if (-1 == shutdown(connfd, SHUT_RDWR))
+        {
+            int a = EBADF;
+            fprintf(stderr, "FAIL errno(%d) %s\n", errno, strerror(errno));
+        }
+        close(connfd);
+        connfd = -1;
+        spdLock_unlock();
     }
-    close(connfd);
-    connfd = -1;
-
-    spdLock_unlock();
 
     return NULL;
 }
