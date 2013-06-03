@@ -28,7 +28,7 @@ int spdLock_lock()
     char tmp_file[256] = {0};
     for(int i=0;i<THREAD_NUM;i++)
     {
-        sprintf(tmp_file,"%s%3d",LOCK_PRE,i);
+        sprintf(tmp_file,"%s%03d",LOCK_PRE,i);
         int fd = open(tmp_file,O_CREAT|O_RDWR,0777);
         struct flock flock;
         flock.l_type = F_WRLCK;
@@ -37,6 +37,7 @@ int spdLock_lock()
         flock.l_len = 0;
         if(-1 != fcntl(fd,F_SETLK,&flock))
         {
+            printf("lock %s\n",tmp_file);
             strcmp(g_lock_file,tmp_file);
             return 0;
         }
