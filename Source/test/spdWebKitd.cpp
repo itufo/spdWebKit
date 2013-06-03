@@ -5,7 +5,7 @@ using namespace std;
 
 int connfd = -1;
 spdHttp* p_http = NULL;
-#define THREAD_NUM 10
+#define THREAD_NUM 3
 #define LOCK_PRE "/tmp/spdWebKitd_lock_"
 
 char g_lock_file[256] =
@@ -79,6 +79,7 @@ int spdLock_lock()
             strcmp(g_lock_file, tmp_file);
             return 0;
         }
+        close(fd);
     }
     return -1;
 }
